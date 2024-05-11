@@ -11,7 +11,7 @@ const LoginScreen = ({navigation}) => {
   const goToSignup = () => {
     navigation.navigate('SignupScreen');
   };
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Basic email and password validation
     if (!ValidateEmail(email)) {
         Alert.alert('Email không chính xác');
@@ -22,25 +22,21 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     // hash password and make request
-    sha256(password).then( hash => {
-      // make login request
-      console.log(hash);
-      axios.post(`${DOMAIN}/login`, {
-        username: email,
-        password: hash
-      })
-      .then(function (response) {
-        r = response.data;
-        console.log("response:", r);
-        Alert.alert("message", r.message);
-        TOKEN.SetToken(r.token, r.timeout);
-        navigation.navigate('HomeScreen');
-      })
-      .catch(function (error) {
-        r = err.response.data
-        console.log("error:", r);
-        Alert.alert("error", r);
-      });
+    axios.post(`${DOMAIN}/login`, {
+      username: email,
+      password: await sha256(password)
+    })
+    .then(response => {
+      r = response.data;
+      console.log("response:", r);
+      Alert.alert("message", r.message);
+      TOKEN.SetToken(r.token, r.timeout);
+      navigation.navigate('HomeScreen');
+    })
+    .catch(err => {
+      r = err.response.data
+      console.log("error:", r);
+      Alert.alert("error", r);
     });
   };
   return (
