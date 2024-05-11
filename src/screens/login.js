@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { DOMAIN, TOKEN,ValidateEmail } from '../config/const';"../config/const.js";
+import { sha256 } from 'react-native-sha256';
+import axios from 'axios';
+
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -9,24 +13,35 @@ const LoginScreen = ({navigation}) => {
   };
   const handleLogin = () => {
     // Basic email and password validation
-    if (!validateEmail(email)) {
+    if (!ValidateEmail(email)) {
         Alert.alert('Email không chính xác');
         return;
-      }
+    }
     if (!email.trim() || !password.trim()) {
       Alert.alert("Xin vui lòng nhập đầy đủ Email và Mật Khẩu");
       return;
     }
-
-    // Add your authentication logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
-    navigation.navigate('HomeScreen');
-  };
-  const validateEmail = (email) => {
-    // Email validation regex pattern
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    // hash password and make request
+    sha256(password).then( hash => {
+      // make login request
+      console.log(hash);
+      axios.post(`${DOMAIN}/login`, {
+        username: email,
+        password: hash
+      })
+      .then(function (response) {
+        r = response.data;
+        console.log("response:", r);
+        Alert.alert("message", r.message);
+        TOKEN.SetToken(r.token, r.timeout);
+        navigation.navigate('HomeScreen');
+      })
+      .catch(function (error) {
+        r = err.response.data
+        console.log("error:", r);
+        Alert.alert("error", r);
+      });
+    });
   };
   return (
     <View style={styles.container}>
