@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { DOMAIN, TOKEN, ValidateEmail } from '../config/const';"../config/const.js";
+import { DOMAIN, ValidateEmail } from '../config/const';
 import { sha256 } from 'react-native-sha256';
 import axios from 'axios';
 
