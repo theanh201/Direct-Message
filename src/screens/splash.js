@@ -1,10 +1,19 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 import Colors from '../asset/styles/color'
+import { TOKEN, DateIsAfterCurrent} from '../config/const';
 
 export default function SplashScreen({navigation}) {
-    setTimeout(()=>{
-        navigation.navigate("LoginScreen")
+    setTimeout(async ()=>{
+        await TOKEN.TokenReadFromStorage();
+        let token = TOKEN.GetToken()
+        console.log("Token from storage:",token);
+        if (token !== null && DateIsAfterCurrent(token.timeout)){
+            navigation.navigate("HomeScreen");
+        }
+        else{
+            navigation.navigate("LoginScreen");
+        }
     },3000)
 
     return (
