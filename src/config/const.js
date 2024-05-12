@@ -32,7 +32,16 @@ class Token {
 		}
 	}
 	GetToken(){
-		return this.data;
+		if(this.data === null){
+			return null
+		}
+		return this.data.token;
+	}
+	GetTimeout(){
+		if(this.data === null){
+			return null
+		}
+		return this.data.timeout;
 	}
 }
 const TOKEN = new Token();
