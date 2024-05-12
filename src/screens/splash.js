@@ -6,13 +6,15 @@ import { TOKEN, DateIsAfterCurrent} from '../config/const';
 export default function SplashScreen({navigation}) {
     setTimeout(async ()=>{
         await TOKEN.TokenReadFromStorage();
-        let token = TOKEN.GetToken()
+
+        let token = TOKEN.GetToken();
+        let timeout = TOKEN.GetTimeout();
         console.log("Token from storage:",token);
-        if (token !== null && DateIsAfterCurrent(token.timeout)){
-            navigation.navigate("HomeScreen");
-        }
-        else{
+        console.log("Storage's token timeout:", timeout);
+        if (token === null || timeout === null || !DateIsAfterCurrent(timeout)){
             navigation.navigate("LoginScreen");
+        }else{
+            navigation.navigate("HomeScreen");
         }
     },3000)
 
