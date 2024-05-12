@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { DOMAIN, TOKEN,ValidateEmail } from '../config/const';"../config/const.js";
+import { DOMAIN, TOKEN,ValidateEmail } from '../config/const';
 import { sha256 } from 'react-native-sha256';
 import axios from 'axios';
 
@@ -28,7 +28,7 @@ const LoginScreen = ({navigation}) => {
     })
     .then(response => {
       r = response.data;
-      console.log("response:", r);
+      console.log("Token receive:", r);
       Alert.alert("message", r.message);
       TOKEN.SetToken(r.token, r.timeout);
       navigation.navigate('HomeScreen');
