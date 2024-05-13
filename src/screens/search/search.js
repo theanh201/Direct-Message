@@ -1,91 +1,132 @@
-import { View, Text, TouchableOpacity, TextInput, StyleSheet,FlatList, Image } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet,FlatList, Image, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Colors from '../../asset/styles/color'
+import { ValidateEmail, DOMAIN, TOKEN } from '../../config/const'
+import axios from 'axios'
+
+function RenderList({list}){
+  if(list.length>0){
+    return(
+      <FlatList
+        data={list}
+        renderItem={({item})=>(
+            <View style={styles.friendContainer}>
+                <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
+                <View style={styles.info}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.dob}>{item.email}</Text>
+                </View>
+                <TouchableOpacity>
+                  <AntDesign name="plus" size={25} color={Colors._black}/>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <AntDesign name="question" size={25} color={Colors._black}/>
+                </TouchableOpacity>
+            </View>
+        )}
+      />
+    );
+  }
+  return(<View style={{alignItems:"center"}}><Text>No result</Text></View>);
+}
 
 
 export default function SearchScreen({navigation}) {
-  const contactList = [
-    {id:1, name: "Huy", img: require("../../asset/images/design/user.jpg")},
-    {id:2, name: "Huy", img: require("../../asset/images/design/user.jpg")},
-  ]
-  const keywordHist = [
-    {id:1, keyword: "Nhóm trọ vui vẻ"},
-    {id:2, keyword: "Nhóm trọ vui vẻ"},
-  ]
+  const [searchString, setSearchString] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
+  const [page, setPage] = useState(0);
+  const searchUser = async (searchString, page) => {
+    setLoading(true);
+    let list = [];
+    if(ValidateEmail(searchString)){
+      try{
+        const response = await axios.get(`${DOMAIN}/get-by-email/${TOKEN.GetToken()}/${searchString}`);
+        if(response.data.Email === null){
+          const data = {
+            email: response.data.Email,
+            name: response.data.Name,
+            avatar: response.data.Avatar,
+            background: response.data.Background,
+          };
+          list.push(data);
+        }
+      }catch(err){
+        console.error('Error fetching data:', err);
+      }
+    }else{
+      try{
+        const response = await axios.get(`${DOMAIN}/get-by-name/${TOKEN.GetToken()}/${searchString}/${page}`);
+        console.log(response.data);
+        for (const user of response.data) {
+          const data = {
+            email: user.Email,
+            name: user.Name,
+            avatar: user.Avatar,
+            background: user.Background,
+          };
+          list.push(data);
+        }
+      }catch(err){
+        console.error('Error fetching data:', err);
+      }
+    }
+    setSearchResult(list);
+    setLoading(false);
+  }
   return (
     <View>
-      <View style={{flexDirection:"row",justifyContent:"space-between",backgroundColor:Colors._secondary, paddingHorizontal:15, paddingVertical:10, alignItems:"center"}}>
-        <TouchableOpacity style={{}} onPress={()=>navigation.navigate("HomeScreen")}>
-          <AntDesign name="arrowleft" size={26} color={Colors._white}/>
+      <View style={{flexDirection:"row",justifyContent:"space-between",backgroundColor:Colors._secondary, paddingHorizontal:10, paddingVertical:10, alignItems:"center"}}>
+        <TouchableOpacity onPress={()=>navigation.navigate("HomeScreen")}>
+          <AntDesign name="arrowleft" size={20} color={Colors._white} style={{marginRight:5}}/>
         </TouchableOpacity>
-        <TextInput style={{width:'90%',borderRadius:10,backgroundColor:Colors._white, paddingHorizontal:15}} placeholder="Tìm kiếm" />
+        <TextInput style={{width:'85%',borderRadius:10,backgroundColor:Colors._white, paddingHorizontal:15}} placeholder="Tìm kiếm" onChangeText={text=>{setSearchString(text);}}/>
+        <TouchableOpacity onPress={()=>{searchUser(searchString, page);}}>
+          <AntDesign name='search1' size={20} color={Colors._white} style={{marginLeft:5}}/>
+        </TouchableOpacity>
       </View>
-      <View style={styles.contact_list}>
-        <Text>Liên hệ đã tìm</Text>
-        <FlatList 
-        data={contactList}
-        horizontal={true}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item)=>item.id}
-        renderItem={({item})=>(
-          <View style={styles.contact_item}>
-            <Image style={styles.contact_img} source={item.img}/>
-            <Text style={styles.contact_name}>{item.name}</Text>
-          </View>
-        )}/>
-
-      </View>
-      <View style={styles.keyword_hist}>
-        <Text style={{}}>Từ khóa đã tìm</Text>
-        <FlatList 
-        data={keywordHist}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item)=>item.id}
-        renderItem={({item})=>(
-          <View style={styles.keyword_item}>
-            <AntDesign name="search1" color={Colors._black} size={20}/>
-            <Text style={styles.keyword_txt}>{item.keyword}</Text>
-          </View>
-        )}/>
-      </View>
+      {loading ? <ActivityIndicator size="large" color="#0000ff" />: <RenderList list={searchResult} />}
     </View>
   )
 }
+
 const styles = StyleSheet.create({
-  contact_list:{
-    padding:15
+  scrollViewContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  contact_item:{
+  container: {
+    justifyContent:'space-between',
     alignItems:'center',
-    marginHorizontal:5,
-    marginTop:10
-  },
-  contact_img:{
-    width:40,
-    height:40,
-    borderRadius:100,
-    marginHorizontal:5
-  },
-  contact_name:{
-    color:Colors._black
-  },
-  keyword_hist:{
-    backgroundColor:Colors._pink,
+    width:'100%',
     padding:15
   },
-  keyword_item:{
-    flexDirection:"row",
-    alignItems:"center",
-    marginVertical:5,
+  friendContainer: {
+    width:'100%',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 5,
     backgroundColor:Colors._white,
     shadowColor:Colors._black,
-    elevation:5,
-    paddingHorizontal:15,
-    paddingVertical:10,
+    elevation:2
+  },
+  img:{
+    width:60,
+    height:60,
     borderRadius:10
   },
-  keyword_txt:{
-    marginLeft:5
+  name: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: Colors._secondary,
+  },
+  dob:{
+    fontSize: 12,
+    color: Colors._black
   }
-})
+});

@@ -6,11 +6,11 @@ import Feather from 'react-native-vector-icons/Feather';
 import { DOMAIN, TOKEN } from '../../config/const';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-function RenderList({friendList}){
-  if(friendList.length>0){
+function RenderList({list}){
+  if(list.length>0){
     return(
       <FlatList
-        data={friendList}
+        data={list}
         renderItem={({item})=>(
           <View style={styles.friendContainer}>
               <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
@@ -47,6 +47,7 @@ const MyComponent = () => {
       const response = await axios.get(`${DOMAIN}/get-friend-list/${TOKEN.GetToken()}`);
       console.log(response.data);
       // Access data from each object and add to the list
+      let list = [];
       for (const user of response.data) {
         const friendData = {
           email: user.Info.Email,
@@ -55,10 +56,10 @@ const MyComponent = () => {
           background: user.Info.Background,
           since: user.Since
         };
-        friendList.push(friendData);
+        list.push(friendData);
       }
-      console.log(friendList.length);
-      // setFriendList([]);
+      // console.log(friendList.length);
+      setFriendList(list);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -68,8 +69,7 @@ const MyComponent = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? <ActivityIndicator size="large" color="#0000ff" />: null}
-      <RenderList friendList={friendList} />
+      {loading ? <ActivityIndicator size="large" color="#0000ff" />: <RenderList list={friendList} />}
     </SafeAreaView>
   );
 };
