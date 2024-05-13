@@ -5,7 +5,7 @@ import { sha256 } from 'react-native-sha256';
 import axios from 'axios';
 
 
-const LoginScreen = ({navigation}) => {
+export default function LoginScreen({navigation}){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const goToSignup = () => {
@@ -79,5 +79,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-
-export default LoginScreen;

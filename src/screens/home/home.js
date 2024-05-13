@@ -14,7 +14,7 @@ import Friends from './friends';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HeaderComponent from '../../components/header';
 
-const HomeScreen = ({navigation}) => {
+export function HomeScreen({navigation}) {
   const theme = 'light';
   const Tab = createBottomTabNavigator();
   const [selectedTab, setSelectedTab] = React.useState('message');

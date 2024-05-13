@@ -2,7 +2,9 @@ import { View, Text, TouchableOpacity, TextInput, StyleSheet,FlatList, Image } f
 import React from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Colors from '../../asset/styles/color'
-export default function SearchScreen() {
+
+
+export default function SearchScreen({navigation}) {
   const contactList = [
     {id:1, name: "Huy", img: require("../../asset/images/design/user.jpg")},
     {id:2, name: "Huy", img: require("../../asset/images/design/user.jpg")},
@@ -14,7 +16,7 @@ export default function SearchScreen() {
   return (
     <View>
       <View style={{flexDirection:"row",justifyContent:"space-between",backgroundColor:Colors._secondary, paddingHorizontal:15, paddingVertical:10, alignItems:"center"}}>
-        <TouchableOpacity style={{}}>
+        <TouchableOpacity style={{}} onPress={()=>navigation.navigate("HomeScreen")}>
           <AntDesign name="arrowleft" size={26} color={Colors._white}/>
         </TouchableOpacity>
         <TextInput style={{width:'90%',borderRadius:10,backgroundColor:Colors._white, paddingHorizontal:15}} placeholder="Tìm kiếm" />

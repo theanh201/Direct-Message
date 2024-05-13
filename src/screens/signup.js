@@ -3,8 +3,7 @@ import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { DOMAIN, ValidateEmail } from '../config/const';
 import { sha256 } from 'react-native-sha256';
 import axios from 'axios';
-
-const SignupScreen = ({navigation}) => {
+export default function SignupScreen({navigation}){
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -90,5 +89,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-
-export default SignupScreen;
