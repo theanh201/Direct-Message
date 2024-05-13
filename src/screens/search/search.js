@@ -21,7 +21,6 @@ export default function SearchScreen({navigation}) {
     if(ValidateEmail(searchString)){
       try{
         const response = await axios.get(`${DOMAIN}/get-by-email/${TOKEN.GetToken()}/${searchString}`);
-        console.log(response.data.Email.length)
         if(response.data.Email.length !== 0){
           const data = {
             email: response.data.Email,
@@ -86,17 +85,22 @@ export default function SearchScreen({navigation}) {
               </TouchableOpacity>
             </View>
           )}
-          ListFooterComponent={() =>
-            <View style={{alignItems:"center", flexDirection:"row", justifyContent:'center'}}>
-              <TouchableOpacity onPress={()=>{searchUser(searchString, page-1);}}>
-                <AntDesign name="arrowleft" size={25} color={Colors._black}/>
-              </TouchableOpacity>
-              <Text style={{fontSize:23, paddingHorizontal:"15%"}}>{page+1}</Text>
-              <TouchableOpacity onPress={()=>{searchUser(searchString, page+1);}}>
-                <AntDesign name="arrowright" size={25} color={Colors._black}/>
-              </TouchableOpacity>
-            </View>
-          }
+          ListFooterComponent={() =>{
+            if (searchResult.length > 9){
+              return(
+                <View style={{alignItems:"center", flexDirection:"row", justifyContent:'center'}}>
+                  <TouchableOpacity onPress={()=>{searchUser(searchString, page-1);}}>
+                    <AntDesign name="arrowleft" size={25} color={Colors._black}/>
+                  </TouchableOpacity>
+                  <Text style={{fontSize:23, paddingHorizontal:"15%"}}>{page+1}</Text>
+                  <TouchableOpacity onPress={()=>{searchUser(searchString, page+1);}}>
+                    <AntDesign name="arrowright" size={25} color={Colors._black}/>
+                  </TouchableOpacity>
+                </View>
+              );
+            }
+            return(null);
+          }}
         />
       ) : (
         <View style={{alignItems:"center"}}><Text>No result</Text></View>
