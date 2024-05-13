@@ -5,39 +5,17 @@ import Colors from '../../asset/styles/color'
 import { ValidateEmail, DOMAIN, TOKEN } from '../../config/const'
 import axios from 'axios'
 
-function RenderList({list}){
-  if(list.length>0){
-    return(
-      <FlatList
-        data={list}
-        renderItem={({item})=>(
-          <View style={styles.friendContainer}>
-            <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
-            <View style={styles.info}>
-              <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.dob}>{item.email}</Text>
-            </View>
-            <TouchableOpacity>
-              <AntDesign name="plus" size={25} color={Colors._black}/>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <AntDesign name="question" size={25} color={Colors._black}/>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-    );
-  }
-  return(<View style={{alignItems:"center"}}><Text>No result</Text></View>);
-}
-
-
 export default function SearchScreen({navigation}) {
   const [searchString, setSearchString] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [page, setPage] = useState(0);
+
   const searchUser = async (searchString, page) => {
+    if(page<0){
+      return;
+    }
+    setPage(page);
     setLoading(true);
     let list = [];
     if(ValidateEmail(searchString)){
@@ -59,7 +37,6 @@ export default function SearchScreen({navigation}) {
     }else{
       try{
         const response = await axios.get(`${DOMAIN}/get-by-name/${TOKEN.GetToken()}/${searchString}/${page}`);
-        console.log(response.data);
         for (const user of response.data) {
           const data = {
             email: user.Email,
@@ -82,12 +59,48 @@ export default function SearchScreen({navigation}) {
         <TouchableOpacity onPress={()=>navigation.navigate("HomeScreen")}>
           <AntDesign name="arrowleft" size={20} color={Colors._white} style={{marginRight:5}}/>
         </TouchableOpacity>
-        <TextInput style={{width:'85%',borderRadius:10,backgroundColor:Colors._white, paddingHorizontal:15}} placeholder="Tìm kiếm" onChangeText={text=>{setSearchString(text);}}/>
+        <TextInput style={{width:'85%',borderRadius:10,backgroundColor:Colors._white, paddingHorizontal:15}} placeholder="Tìm kiếm" onChangeText={text=>{setPage(0);setSearchString(text);}}/>
         <TouchableOpacity onPress={()=>{searchUser(searchString, page);}}>
           <AntDesign name='search1' size={20} color={Colors._white} style={{marginLeft:5}}/>
         </TouchableOpacity>
       </View>
-      {loading ? <ActivityIndicator size="large" color="#0000ff" />: <RenderList list={searchResult} />}
+      {/* if loading */}
+      {loading ? (<ActivityIndicator size="large" color="#0000ff" />) : 
+      // if result not empty
+      searchResult.length > 0 ? (
+        <FlatList
+          style={{height:"90%"}}
+          data={searchResult}
+          renderItem={({item})=>(
+            <View style={styles.friendContainer}>
+              <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
+              <View style={styles.info}>
+                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.dob}>{item.email}</Text>
+              </View>
+              <TouchableOpacity>
+                <AntDesign name="plus" size={25} color={Colors._black}/>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <AntDesign name="question" size={25} color={Colors._black}/>
+              </TouchableOpacity>
+            </View>
+          )}
+          ListFooterComponent={() =>
+            <View style={{alignItems:"center", flexDirection:"row", justifyContent:'center'}}>
+              <TouchableOpacity onPress={()=>{searchUser(searchString, page-1);}}>
+                <AntDesign name="arrowleft" size={25} color={Colors._black}/>
+              </TouchableOpacity>
+              <Text style={{fontSize:23, paddingHorizontal:"15%"}}>{page+1}</Text>
+              <TouchableOpacity onPress={()=>{searchUser(searchString, page+1);}}>
+                <AntDesign name="arrowright" size={25} color={Colors._black}/>
+              </TouchableOpacity>
+            </View>
+          }
+        />
+      ) : (
+        <View style={{alignItems:"center"}}><Text>No result</Text></View>
+      )}
     </View>
   )
 }
