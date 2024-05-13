@@ -11,19 +11,19 @@ function RenderList({list}){
       <FlatList
         data={list}
         renderItem={({item})=>(
-            <View style={styles.friendContainer}>
-                <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
-                <View style={styles.info}>
-                  <Text style={styles.name}>{item.name}</Text>
-                  <Text style={styles.dob}>{item.email}</Text>
-                </View>
-                <TouchableOpacity>
-                  <AntDesign name="plus" size={25} color={Colors._black}/>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <AntDesign name="question" size={25} color={Colors._black}/>
-                </TouchableOpacity>
+          <View style={styles.friendContainer}>
+            <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
+            <View style={styles.info}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.dob}>{item.email}</Text>
             </View>
+            <TouchableOpacity>
+              <AntDesign name="plus" size={25} color={Colors._black}/>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <AntDesign name="question" size={25} color={Colors._black}/>
+            </TouchableOpacity>
+          </View>
         )}
       />
     );
@@ -43,7 +43,8 @@ export default function SearchScreen({navigation}) {
     if(ValidateEmail(searchString)){
       try{
         const response = await axios.get(`${DOMAIN}/get-by-email/${TOKEN.GetToken()}/${searchString}`);
-        if(response.data.Email === null){
+        console.log(response.data.Email.length)
+        if(response.data.Email.length !== 0){
           const data = {
             email: response.data.Email,
             name: response.data.Name,
