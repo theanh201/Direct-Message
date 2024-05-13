@@ -5,7 +5,34 @@ import Colors from '../../asset/styles/color';
 import Feather from 'react-native-vector-icons/Feather';
 import { DOMAIN, TOKEN } from '../../config/const';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import FormData from 'form-data';
+
+function RenderList({friendList}){
+  if(friendList.length>0){
+    return(
+      <FlatList
+        data={friendList}
+        renderItem={({item})=>(
+          <View style={styles.friendContainer}>
+              <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
+              <View style={styles.info}>
+                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.dob}>{item.since}</Text>
+              </View>
+              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', width:'20%'}}>
+                <TouchableOpacity>
+                  <Feather name='phone-call' size={20} color={Colors._green}/>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Feather name='message-circle' size={20} color={Colors._secondary}/>
+                </TouchableOpacity>
+              </View>
+          </View>
+        )}
+      />
+    );
+  }
+  return(<Text>You have no friend</Text>)
+}
 
 const MyComponent = () => {
   const [friendList, setFriendList] = useState([]);
@@ -30,8 +57,8 @@ const MyComponent = () => {
         };
         friendList.push(friendData);
       }
-      console.log(friendList);
-      // setStudents(extractedData);
+      console.log(friendList.length);
+      // setFriendList([]);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -41,26 +68,8 @@ const MyComponent = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={friendList}
-        renderItem={({item})=>(
-          <View style={styles.friendContainer}>
-              <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
-              <View style={styles.info}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.dob}>{item.since}</Text>
-              </View>
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', width:'20%'}}>
-                <TouchableOpacity>
-                  <Feather name='phone-call' size={20} color={Colors._green}/>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Feather name='message-circle' size={20} color={Colors._secondary}/>
-                </TouchableOpacity>
-              </View>
-          </View>
-        )}
-      />
+      {loading ? <ActivityIndicator size="large" color="#0000ff" />: null}
+      <RenderList friendList={friendList} />
     </SafeAreaView>
   );
 };
