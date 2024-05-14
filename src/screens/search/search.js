@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput, StyleSheet,FlatList, Image, ActivityIndicator, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, StyleSheet,FlatList, Image, ActivityIndicator, Modal, Alert } from 'react-native'
 import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Colors from '../../asset/styles/color'
@@ -77,6 +77,26 @@ export default function SearchScreen({navigation}) {
     setSearchResult(list);
     setLoading(false);
   }
+  const addFriendRequest = async (email) => {
+    try{
+      let response = await axios.get(`${DOMAIN}/get-prekey-bundle/${TOKEN.GetToken()}/${email}`);
+      console.log(response.data);
+      // Processing encryption here
+      let form = new FormData();
+      form.append("toEmail", email);
+      // Hard code ek for testing
+      form.append("ek", "7fb26648cca726f2cce63eda8e92e220684d0200f08d7076a3a4beec121af720");
+      form.append("opkUsed", (response.data.Opk.length === 64 ? response.data.Opk :"0000000000000000000000000000000000000000000000000000000000000000"));
+      form.append("token", TOKEN.GetToken());
+      response = await axios.postForm(`${DOMAIN}/add-friend-request`, form);
+      console.log(response.data);
+      Alert.alert(response.data);
+    }catch(err){
+      console.error(err.response.data);
+      Alert.alert(err.response.data);
+    }
+    setModalVisible(false);
+  }
   return (
     <View>
       <View style={{flexDirection:"row",justifyContent:"space-between",backgroundColor:Colors._secondary, paddingHorizontal:10, paddingVertical:10, alignItems:"center"}}>
@@ -102,7 +122,7 @@ export default function SearchScreen({navigation}) {
               <Text>Email: {email}</Text>
             </View>
             <View style={{bottom:5, paddingHorizontal:5, position:"absolute", width:"100%"}}>
-              <TouchableOpacity onPress={() => {setModalVisible(false)}} style={{backgroundColor:"green", borderRadius:5, alignItems:"center", marginBottom:5}}>
+              <TouchableOpacity onPress={() => addFriendRequest(email)} style={{backgroundColor:"green", borderRadius:5, alignItems:"center", marginBottom:5}}>
                 <Text style={{fontSize:20, padding:5}}>AddFriend</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => {setModalVisible(false)}} style={{backgroundColor:"red", borderRadius:5, alignItems:"center"}}>
