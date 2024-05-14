@@ -13,7 +13,7 @@ import CallScreen from './src/screens/home/call';
 import Colors from './src/asset/styles/color';
 import PersonalScreen from './src/screens/Profile/personal';
 import SettingScreen from './src/screens/Profile/setting';
-
+import FriendRequest from './src/screens/Profile/friendRequest';
 import Txt from './src/screens/test';
 import SearchScreen from './src/screens/search/search';
 const myStack = createNativeStackNavigator();
@@ -33,7 +33,7 @@ export default function App() {
         <myStack.Screen name="SettingScreen" component={SettingScreen} options={{headerShown:false}}/>
         <myStack.Screen name="Txt" component={Txt} options={{headerShown:false}}/>
         <myStack.Screen name="SearchScreen" component={SearchScreen} options={{headerShown:false}}/>
-
+        <myStack.Screen name="FriendRequest" component={FriendRequest} options={{headerShow:false}}/>
       </myStack.Navigator>
     </NavigationContainer>
     </>

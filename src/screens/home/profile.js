@@ -31,9 +31,15 @@ export default function UserScreen({navigation}) {
       </TouchableOpacity>
       <TouchableOpacity style={styles.profile_box}>
         <View style={styles.profile_content}>
-
           <Entypo name="shield" size={24} color={Colors._secondary}/>
           <Text style={styles.profile_text}>Tài khoản và bảo mật</Text>
+        </View>
+        <Entypo name="chevron-right" size={24} color={Colors._secondary}/>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.profile_box} onPress={()=>navigation.navigate("FriendRequest")}>
+        <View style={styles.profile_content}>
+          <Entypo name="shield" size={24} color={Colors._secondary}/>
+          <Text style={styles.profile_text}>Lời mời kết bạn</Text>
         </View>
         <Entypo name="chevron-right" size={24} color={Colors._secondary}/>
       </TouchableOpacity>
