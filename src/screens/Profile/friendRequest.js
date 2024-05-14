@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity, FlatList, Alert } from 'react-native';
 import axios from 'axios';
 import Colors from '../../asset/styles/color';
 import Feather from 'react-native-vector-icons/Feather';
@@ -8,30 +8,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@rneui/base';
 import { configureLayoutAnimationBatch } from 'react-native-reanimated/lib/typescript/reanimated2/core';
 
-function RenderList({list}){
-  return(
-    <FlatList
-    data={list}
-    renderItem={({item})=>(
-      <View style={styles.friendContainer}>
-          <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
-          <View style={styles.info}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.dob}>{item.email}</Text>
-          </View>
-          <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', width:'20%'}}>
-            <TouchableOpacity>
-              <Feather name='x' size={20} color={Colors._yellow}/>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Feather name='check' size={20} color={Colors._secondary}/>
-            </TouchableOpacity>
-          </View>
-      </View>
-    )}
-  />
-  );
-}
 export default function FriendRequest({navigation}){
   const [request, setRequest] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -65,7 +41,52 @@ export default function FriendRequest({navigation}){
   };
   return(
     <SafeAreaView>
-      {loading ? <ActivityIndicator size="large" color="#0000ff" /> : <RenderList list={request}/>}
+      {loading ? <ActivityIndicator size="large" color="#0000ff" /> : 
+        <FlatList
+          data={request}
+          renderItem={({item})=>(
+            <View style={styles.friendContainer}>
+                <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
+                <View style={styles.info}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.dob}>{item.email}</Text>
+                </View>
+                <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', width:'20%'}}>
+                  <TouchableOpacity onPress={async ()=>{
+                    try{
+                      let form = new FormData();
+                      form.append("token", TOKEN.GetToken());
+                      form.append("email", item.email);
+                      const response = await axios.postForm(`${DOMAIN}/reject-friend-request`, form);
+                      console.log(response.data);
+                      setRequest(request.filter(i => i.email !== item.email));
+                    }catch(err){
+                      console.log(err);
+                      Alert.alert(err.response.data);
+                    }
+                  }}>
+                    <Feather name='x' size={20} color={Colors._yellow}/>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={async ()=>{
+                    try{
+                      let form = new FormData();
+                      form.append("token", TOKEN.GetToken());
+                      form.append("email", item.email);
+                      const response = await axios.postForm(`${DOMAIN}/accept-friend-request`, form);
+                      console.log(response.data);
+                      setRequest(request.filter(i => i.email !== item.email));
+                    }catch(err){
+                      console.log(err);
+                      Alert.alert(err.response.data);
+                    }
+                  }}>
+                    <Feather name='check' size={20} color={Colors._secondary}/>
+                  </TouchableOpacity>
+                </View>
+            </View>
+          )}
+        />
+      }
     </SafeAreaView>
   );
 }
