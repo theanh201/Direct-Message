@@ -60,11 +60,10 @@ const MyComponent = () => {
       }
       // console.log(friendList.length);
       setFriendList(list);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
