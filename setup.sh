@@ -9,3 +9,5 @@ npm install @react-navigation/bottom-tabs
 yarn add react-native-sha256
 npm install --save react-native-really-awesome-button
 npm install @react-native-async-storage/async-storage
+npm install react-native-fs --save
+
