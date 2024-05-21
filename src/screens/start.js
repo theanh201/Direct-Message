@@ -63,12 +63,9 @@ export default function StartScreen({ navigation }) {
             source={require("../asset/images/logo/google.png")}
           />
         </TouchableOpacity>
-        {/* <TouchableOpacity>
-          <Image
-            style={styles.logo}
-            source={require("../asset/images/logo/apple-logo.png")}
-          />
-        </TouchableOpacity> */}
+        <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+          <Text>TEST</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );

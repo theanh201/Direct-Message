@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const DOMAIN = "localhost:8080";
+const DOMAIN = "http://192.168.0.104:8080";
 const ValidateEmail = (email) => {
   // Email validation regex pattern
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
+
 class Token {
   // when open app read token from storage
   async TokenReadFromStorage() {

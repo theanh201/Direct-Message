@@ -46,6 +46,9 @@ export default function SignupScreen({ navigation }) {
   const handleSignup = async () => {
     if (isFormValid) {
       // hash password and make request
+      console.log("Signup Account");
+      console.log(email);
+      console.log(password);
       axios
         .post(`${DOMAIN}/register`, {
           username: email,
@@ -60,13 +63,14 @@ export default function SignupScreen({ navigation }) {
         })
         .catch((err) => {
           r = err;
-          Alert.alert("Lỗi:", r);
+          console.log("Error:", r.response.data);
         });
     }
   };
 
   useEffect(() => {
     ValidModel();
+    console.log(sha256(password));
   }, [email, password, confirmPassword]);
 
   return (

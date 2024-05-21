@@ -40,7 +40,9 @@ export default function LoginScreen({ navigation }) {
   };
 
   const handleLogin = async () => {
-    console.log(isSubmit);
+    console.log("Login Again");
+    console.log(email);
+    console.log(password);
     // Basic email and password validation
     if (isFormValid) {
       axios
@@ -51,14 +53,12 @@ export default function LoginScreen({ navigation }) {
         .then((response) => {
           r = response.data;
           console.log("Token receive:", r);
-          Alert.alert("message", r.message);
           TOKEN.SetToken(r.token, r.timeout);
           navigation.navigate("HomeScreen");
         })
         .catch((err) => {
           r = err.response.data;
           console.log("error:", r);
-          Alert.alert("error", r);
         });
     }
     // hash password and make request

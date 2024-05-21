@@ -15,6 +15,7 @@ import FriendRequest from "./src/screens/Profile/friendRequest";
 import Txt from "./src/screens/test";
 import SearchScreen from "./src/screens/Search/search";
 import StartScreen from "./src/screens/start";
+import ChatScreen from "./src/screens/chatting";
 const myStack = createNativeStackNavigator();
 export default function App() {
   return (
@@ -45,6 +46,11 @@ export default function App() {
           <myStack.Screen
             name="HomeScreen"
             component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <myStack.Screen
+            name="ChatScreen"
+            component={ChatScreen}
             options={{ headerShown: false }}
           />
           <myStack.Screen
