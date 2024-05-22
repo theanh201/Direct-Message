@@ -1,3 +1,6 @@
+<h1 align="center">Đây là ứng dụng nhắn tin trên nền tảng mobile, hỗ trợ cho cả android và ios</h1>
+
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
