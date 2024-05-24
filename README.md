@@ -1,5 +1,9 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# Introduction
+UI of ChatApp
+<img style="width:200px; height:700px" src="blob:https://chat.zalo.me/42c2a509-d945-40f9-852c-4a9f0d5842f1"/>
+
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
