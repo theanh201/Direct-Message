@@ -15,7 +15,6 @@ const ChatScreen = ({ route }) => {
   const [listMessages, setListMessages] = useState([]);
   const [message, setMessage] = useState("");
   const websocket = new WebSocket("ws://192.168.1.101:8080/ws");
-
   useEffect(() => {
     // Initialize WebSocket connection
     console.log("Chat with:");
