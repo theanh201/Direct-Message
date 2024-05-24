@@ -57,7 +57,7 @@ export default function LoginScreen({ navigation }) {
           navigation.navigate("HomeScreen");
         })
         .catch((err) => {
-          r = err.response.data;
+          r = err;
           console.log("error:", r);
         });
     }

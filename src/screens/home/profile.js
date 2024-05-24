@@ -5,19 +5,22 @@ import SwitchUser from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
 import PersonalScreen from "../Profile/personal";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import StartScreen from "../start";
 
 export default function UserScreen({ navigation }) {
   return (
-    <View>
+    <View style={{ alignItems: "center" }}>
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "space-between",
+          alignItems: "center",
           padding: 15,
           alignItems: "center",
           backgroundColor: Colors._white,
           borderBottomColor: Colors._dash,
           borderBottomWidth: 1,
+          justifyContent: "space-between",
+          width: "100%",
         }}
       >
         <TouchableOpacity
@@ -38,20 +41,17 @@ export default function UserScreen({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.profile_box}>
+      <TouchableOpacity
+        style={styles.profile_box}
+        onPress={() => navigation.navigate("SettingAccout")}
+      >
         <View style={styles.profile_content}>
           <Entypo name="lock" size={24} color={Colors._blue} />
           <Text style={styles.text}>Tài khoản và bảo mật</Text>
         </View>
         <Entypo name="chevron-right" size={24} color={Colors._blue} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.profile_box}>
-        <View style={styles.profile_content}>
-          <Entypo name="shield" size={24} color={Colors._blue} />
-          <Text style={styles.text}>Tài khoản và bảo mật</Text>
-        </View>
-        <Entypo name="chevron-right" size={24} color={Colors._blue} />
-      </TouchableOpacity>
+
       <TouchableOpacity
         style={styles.profile_box}
         onPress={() => navigation.navigate("FriendRequest")}
@@ -61,6 +61,12 @@ export default function UserScreen({ navigation }) {
           <Text style={styles.text}>Lời mời kết bạn</Text>
         </View>
         <Entypo name="chevron-right" size={24} color={Colors._blue} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.logout}
+        onPress={() => navigation.replace("StartScreen")}
+      >
+        <Text style={styles.logout_text}>Đăng xuất</Text>
       </TouchableOpacity>
     </View>
   );
@@ -87,5 +93,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 10,
     fontWeight: "bold",
+  },
+  logout: {
+    backgroundColor: Colors._red,
+    width: 300,
+    padding: 10,
+    alignItems: "center",
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  logout_text: {
+    color: Colors._white,
+    fontWeight: "bold",
+    fontSize: 14,
   },
 });

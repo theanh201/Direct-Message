@@ -16,6 +16,11 @@ import Txt from "./src/screens/test";
 import SearchScreen from "./src/screens/Search/search";
 import StartScreen from "./src/screens/start";
 import ChatScreen from "./src/screens/chatting";
+import ImageSetting from "./src/screens/Settings/setting_image";
+import BackgroundSetting from "./src/screens/Settings/setting_bg";
+import SettingInfo from "./src/screens/Settings/setting_info";
+import SettingAccout from "./src/screens/Settings/setting_acc";
+import SettingTheme from "./src/screens/Settings/setting_theme";
 const myStack = createNativeStackNavigator();
 export default function App() {
   return (
@@ -76,7 +81,47 @@ export default function App() {
           <myStack.Screen
             name="FriendRequest"
             component={FriendRequest}
-            options={{ headerShow: false }}
+            options={{ title: "Lời mời kết bạn", headerTitleAlign: "center" }}
+          />
+          <myStack.Screen
+            name="ImageSetting"
+            component={ImageSetting}
+            options={{
+              title: "Thay đổi ảnh đại diện",
+              headerTitleAlign: "center",
+            }}
+          />
+          <myStack.Screen
+            name="BackgroundSetting"
+            component={BackgroundSetting}
+            options={{
+              title: "Thay đổi ảnh bìa",
+              headerTitleAlign: "center",
+            }}
+          />
+          <myStack.Screen
+            name="SettingInfo"
+            component={SettingInfo}
+            options={{
+              title: "Thông tin cá nhân",
+              headerTitleAlign: "center",
+            }}
+          />
+          <myStack.Screen
+            name="SettingAccout"
+            component={SettingAccout}
+            options={{
+              title: "Tài khoản và bảo mật",
+              headerTitleAlign: "center",
+            }}
+          />
+          <myStack.Screen
+            name="SettingTheme"
+            component={SettingTheme}
+            options={{
+              title: "Cài đặt chung",
+              headerTitleAlign: "center",
+            }}
           />
         </myStack.Navigator>
       </NavigationContainer>

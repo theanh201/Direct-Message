@@ -27,30 +27,41 @@ export default function SettingScreen({ navigation }) {
       </View>
       <View style={{ marginTop: 40, paddingHorizontal: 15 }}>
         <Text style={styles.txt_intro}>Cá nhân hóa</Text>
-        <TouchableOpacity style={styles.box_content}>
+        <TouchableOpacity
+          style={styles.box_content}
+          onPress={() => navigation.navigate("SettingInfo")}
+        >
           <Entypo name="user" size={20} color={Colors._black} />
           <Text style={styles.txt_content}>Thông tin cá nhân</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.box_content}>
+        <TouchableOpacity
+          style={styles.box_content}
+          onPress={() => navigation.navigate("ImageSetting")}
+        >
           <FA5 name="paint-brush" size={20} color={Colors._black} />
           <Text style={styles.txt_content}>Thay đổi ảnh đại điện</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.box_content}>
+        <TouchableOpacity
+          style={styles.box_content}
+          onPress={() => navigation.navigate("BackgroundSetting")}
+        >
           <FA5 name="paint-roller" size={20} color={Colors._black} />
           <Text style={styles.txt_content}>Thay đổi ảnh bìa</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.box_content}>
-          <Entypo name="book" size={20} color={Colors._black} />
-          <Text style={styles.txt_content}>Giới thiệu về bản thân</Text>
         </TouchableOpacity>
       </View>
       <View style={{ marginTop: 40, paddingHorizontal: 15 }}>
         <Text style={styles.txt_intro}>Cài đặt</Text>
-        <TouchableOpacity style={styles.box_content}>
+        <TouchableOpacity
+          style={styles.box_content}
+          onPress={() => navigation.navigate("SettingAccout")}
+        >
           <MI name="admin-panel-settings" size={22} color={Colors._black} />
           <Text style={styles.txt_content}>Quản lý tài khoản</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.box_content}>
+        <TouchableOpacity
+          style={styles.box_content}
+          onPress={() => navigation.navigate("SettingTheme")}
+        >
           <MI name="settings-applications" size={22} color={Colors._black} />
           <Text style={styles.txt_content}>Cài đặt chung</Text>
         </TouchableOpacity>

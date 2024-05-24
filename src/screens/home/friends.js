@@ -1,74 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity, FlatList } from 'react-native';
-import axios from 'axios';
-import Colors from '../../asset/styles/color';
-import Feather from 'react-native-vector-icons/Feather';
-import { DOMAIN, TOKEN } from '../../config/const';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import axios from "axios";
+import Colors from "../../asset/styles/color";
+import Feather from "react-native-vector-icons/Feather";
+import Entypo from "react-native-vector-icons/Entypo";
+import { DOMAIN, TOKEN } from "../../config/const";
+import { SafeAreaView } from "react-native-safe-area-context";
+import defaultTemplate from "../../config/config";
 
-function RenderList({list}){
-  if(list.length>0){
-    return(
-      <FlatList
-        data={list}
-        renderItem={({item})=>(
-          <View style={styles.friendContainer}>
-              <Image style={styles.img} source={{uri:`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.avatar}`}}/>
-              <View style={styles.info}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.dob}>{item.since}</Text>
-              </View>
-              <View style={{flexDirection:'row', justifyContent:'space-between', alignItems:'center', width:'20%'}}>
-                <TouchableOpacity>
-                  <Feather name='phone-call' size={20} color={Colors._green}/>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Feather name='message-circle' size={20} color={Colors._secondary}/>
-                </TouchableOpacity>
-              </View>
-          </View>
-        )}
-      />
-    );
-  }
-  return(<Text>You have no friend</Text>)
-}
-
-const MyComponent = () => {
+const MyComponent = ({ navigation }) => {
   const [friendList, setFriendList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
+    console.log("FriendList:");
+    console.log(friendList);
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${DOMAIN}/get-friend-list/${TOKEN.GetToken()}`);
-      console.log(response.data);
-      // Access data from each object and add to the list
-      let list = [];
-      for (const user of response.data) {
-        const friendData = {
-          email: user.Info.Email,
-          name: user.Info.Name,
-          avatar: user.Info.Avatar,
-          background: user.Info.Background,
-          since: user.Since
-        };
-        list.push(friendData);
-      }
-      // console.log(friendList.length);
-      setFriendList(list);
+      const response = await axios.get(
+        `${DOMAIN}/get-friend-list/${TOKEN.GetToken()}`
+      );
+      setFriendList(response.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error(error.response.data);
     }
     setLoading(false);
   };
-
+  const handleChat = (item) => {
+    navigation.navigate("ChatScreen", { item });
+  };
   return (
     <SafeAreaView style={styles.container}>
-      {loading ? <ActivityIndicator size="large" color="#0000ff" />: <RenderList list={friendList} />}
+      {loading ? (
+        <ActivityIndicator size="large" color={Colors._blue} />
+      ) : friendList ? (
+        <FlatList
+          data={friendList}
+          style={{}}
+          renderItem={({ item }) => (
+            <View style={styles.friend}>
+              <Image
+                style={styles.img}
+                source={{
+                  uri: item.Info.Avatar
+                    ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${
+                        item.Info.Avatar
+                      }`
+                    : defaultTemplate.avatar,
+                }}
+              />
+              <View style={styles.info}>
+                <Text style={styles.text}>{item.Info.Name}</Text>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 10,
+                  }}
+                >
+                  <TouchableOpacity
+                    style={[styles.btn, { backgroundColor: Colors._green }]}
+                  >
+                    <Feather
+                      name="phone-call"
+                      size={20}
+                      color={Colors._white}
+                    />
+                    <Text style={styles.textConfirm}>Gọi điện</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleChat(item)}
+                    style={[styles.btn, { backgroundColor: Colors._blue }]}
+                  >
+                    <Feather
+                      name="message-square"
+                      size={20}
+                      color={Colors._white}
+                    />
+                    <Text style={styles.textConfirm}>Nhắm tin</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
+        />
+      ) : (
+        <Text>Hiện không có bạn bè</Text>
+      )}
     </SafeAreaView>
   );
 };
@@ -76,44 +108,67 @@ const MyComponent = () => {
 const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
-    justifyContent:'space-between',
-    alignItems:'center',
-    width:'100%',
-    padding:15
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    padding: 15,
   },
-  friendContainer: {
-    width:'100%',
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
+  friend: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
     padding: 10,
     borderRadius: 5,
-    backgroundColor:Colors._white,
-    shadowColor:Colors._black,
-    elevation:2
+    backgroundColor: Colors._white,
+    shadowColor: Colors._black,
+    elevation: 2,
   },
-  img:{
-    width:60,
-    height:60,
-    borderRadius:10
+  btn: {
+    width: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    marginHorizontal: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    shadowColor: Colors._black,
+    elevation: 5,
   },
-  info:{
-    marginLeft: 10
+  img: {
+    width: 60,
+    height: 60,
+    borderRadius: 60,
+    borderColor: Colors._dash,
+    borderWidth: 1,
+  },
+  info: {
+    width: "70%",
+    alignItems: "center",
+    marginLeft: 10,
   },
   name: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors._secondary,
   },
-  dob:{
+  text: {
+    fontSize: 14,
+    color: Colors._black,
+    fontWeight: "bold",
+  },
+  textConfirm: {
     fontSize: 12,
-    color: Colors._black
-  }
+    color: Colors._white,
+    fontWeight: "bold",
+    marginLeft: 5,
+  },
 });
 
 export default MyComponent;

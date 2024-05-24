@@ -27,11 +27,11 @@ export default function HeaderComponent({ navigation }) {
           style={styles.searchInput}
           onPress={() => navigation.navigate("SearchScreen")}
         >
-          <Text style={styles.txt_input}>Tìm kiếm</Text>
+          <Text style={styles.txt_input}>Tìm kiếm bạn bè</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={toggleOptionVisible}>
+        {/* <TouchableOpacity onPress={toggleOptionVisible}>
           <Entypo name="plus" size={24} color={Colors._white} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {optionVisible && (
           <View style={styles.header_options}>
             <TouchableOpacity style={styles.option_fn}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   // style cho thanh tìm kiếm
   searchInput: {
-    width: "80%",
+    width: "90%",
     marginHorizontal: 10,
     fontSize: 16,
     backgroundColor: Colors._white,

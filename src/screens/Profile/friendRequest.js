@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  ImageBackground,
 } from "react-native";
 import axios from "axios";
 import Colors from "../../asset/styles/color";
@@ -17,12 +18,10 @@ import { DOMAIN, TOKEN } from "../../config/const";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@rneui/base";
 import { configureLayoutAnimationBatch } from "react-native-reanimated/lib/typescript/reanimated2/core";
-import defaultImage from "../../config/config";
-
+import defaultTemplate from "../../config/config";
 export default function FriendRequest({ navigation }) {
   const [request, setRequest] = useState([]);
   const [loading, setLoading] = useState(true);
-  let token = TOKEN.GetToken();
   useEffect(() => {
     fetchData();
   }, []);
@@ -32,105 +31,120 @@ export default function FriendRequest({ navigation }) {
       const response = await axios.get(
         `${DOMAIN}/get-friend-request/${TOKEN.GetToken()}`
       );
-      console.log(response.data);
-      let list = [];
-      for (let user of response.data) {
-        const entry = {
-          email: user.From.Email,
-          name: user.From.Name,
-          avatar: user.From.Avatar,
-          background: user.From.Background,
-          ek: user.Ek,
-          ik: user.Ik,
-          opkUsed: user.OpkUsed,
-        };
-        list.push(entry);
+      list = [];
+      console.log(TOKEN.GetToken());
+      for (const user of response.data) {
+        // const entry = {
+        //   email: user.From.Email,
+        //   name: user.From.Name,
+        //   avatar: user.From.Avatar,
+        //   background: user.From.Background,
+        //   ek: user.Ek,
+        //   ik: user.Ik,
+        //   opkUsed: user.OpkUsed,
+        // };
+        console.log(user.From);
+        list.push(user.From);
       }
-      if (list) {
-        setRequest(list);
-        console.log(request);
-      }
+      setRequest(list);
+      console.log("data=" + request);
     } catch (err) {}
     setLoading(false);
   };
   return (
-    <SafeAreaView>
+    <ImageBackground
+      style={{ height: "100%" }}
+      resizeMode="cover"
+      source={require("../../asset/images/design/bg_main.jpeg")}
+    >
       {loading ? (
         <ActivityIndicator size="large" color={Colors._blue} />
-      ) : request === null ? (
+      ) : request !== null ? (
+        // <Text style={styles.text}>{request[0].Email}</Text>
         <FlatList
           style={{ padding: 15 }}
           data={request}
           renderItem={({ item }) => (
             <View style={styles.friendContainer}>
+              {/* Avatar */}
               <Image
                 style={styles.img}
                 source={{
-                  uri: item.avatar ? item.avatar : defaultImage,
+                  uri: item.Avatar
+                    ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.Avatar}`
+                    : defaultTemplate.avatar,
                 }}
               />
-              <View style={styles.info}>
-                <Text style={styles.text}>{item.name}</Text>
-                <Text style={styles.text}>{item.email}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  width: "20%",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={async () => {
-                    try {
-                      let form = new FormData();
-                      form.append("token", TOKEN.GetToken());
-                      form.append("email", item.email);
-                      const response = await axios.postForm(
-                        `${DOMAIN}/reject-friend-request`,
-                        form
-                      );
-                      console.log(response.data);
-                      setRequest(request.filter((i) => i.email !== item.email));
-                    } catch (err) {
-                      console.log(err);
-                      Alert.alert(err.response.data);
-                    }
-                  }}
-                >
-                  <Feather name="x" size={30} color={Colors._red} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={async () => {
-                    try {
-                      let form = new FormData();
-                      form.append("token", TOKEN.GetToken());
-                      form.append("email", item.email);
-                      const response = await axios.postForm(
-                        `${DOMAIN}/accept-friend-request`,
-                        form
-                      );
-                      console.log(response.data);
-                      setRequest(request.filter((i) => i.email !== item.email));
-                    } catch (err) {
-                      console.log(err);
-                      Alert.alert(err.response.data);
-                    }
-                  }}
-                >
-                  <Feather name="check" size={30} color={Colors._green} />
-                </TouchableOpacity>
+              {/* Profile */}
+              <View style={styles.firendProfile}>
+                <View style={styles.info}>
+                  <Text style={styles.text}>{item.Name}</Text>
+                  {/* 2 Button */}
+                  <View style={styles.list_btn}>
+                    <TouchableOpacity
+                      style={[styles.btn, { backgroundColor: Colors._red }]}
+                      onPress={async () => {
+                        try {
+                          let form = new FormData();
+                          form.append("token", TOKEN.GetToken());
+                          form.append("email", item.Email);
+                          const response = await axios.postForm(
+                            `${DOMAIN}/reject-friend-request`,
+                            form
+                          );
+                          console.log(response.data);
+                          Alert.alert(
+                            "Từ chối lời mời kết bạn của" + item.Name
+                          );
+                          setRequest(
+                            request.filter((i) => i.email !== item.email)
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          Alert.alert(err.response.data);
+                        }
+                      }}
+                    >
+                      <Text style={styles.textConfirm}>Từ chối</Text>
+                      <Feather name="x" size={20} color={Colors._white} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.btn, { backgroundColor: Colors._green }]}
+                      onPress={async () => {
+                        try {
+                          let form = new FormData();
+                          form.append("token", TOKEN.GetToken());
+                          form.append("email", item.Email);
+                          const response = await axios.postForm(
+                            `${DOMAIN}/accept-friend-request`,
+                            form
+                          );
+                          console.log(response.data);
+                          Alert.alert(
+                            `Bạn và ${item.Name} đã trở thành bạn bè`
+                          );
+                          setRequest(
+                            request.filter((i) => i.email !== item.email)
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          Alert.alert(err.response.data);
+                        }
+                      }}
+                    >
+                      <Text style={styles.textConfirm}>Chấp nhận</Text>
+                      <Feather name="check" size={20} color={Colors._white} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
           )}
         />
       ) : (
-        <View style={{ marginTop: 100, alignItems: "center" }}>
-          <Text style={styles.text}>Hiện không có lời mời kết bạn</Text>
-        </View>
+        <Text style={styles.textConfirm}>Hiện không có lời mời kết bạn</Text>
       )}
-    </SafeAreaView>
+    </ImageBackground>
   );
 }
 
@@ -153,22 +167,49 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: Colors._white,
     shadowColor: Colors._black,
     elevation: 2,
   },
   img: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 10,
   },
   info: {
     marginLeft: 10,
   },
+  firendProfile: {
+    alignItems: "center",
+    width: "80%",
+  },
+  textConfirm: {
+    color: Colors._white,
+    fontWeight: "bold",
+    marginRight: 5,
+  },
   text: {
     color: Colors._black,
     fontSize: 14,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  list_btn: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  btn: {
+    width: 120,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 5,
+    borderRadius: 10,
+    shadowColor: Colors._black,
+    elevation: 8,
+    flexDirection: "row",
   },
 });

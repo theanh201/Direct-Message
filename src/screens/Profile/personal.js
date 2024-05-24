@@ -16,26 +16,39 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { launchCamera } from "react-native-image-picker";
 import axios from "axios";
 import { TOKEN, DOMAIN } from "../../config/const";
+import defaultTemplate from "../../config/config";
 
 export default function PersonalScreen({ navigation }) {
   const [expanded, setExpanded] = useState(false);
   const [numLines, setNumLines] = useState(0);
   const [info, setInfo] = useState({});
-
   const getSefInfo = () => {
     axios
-      .get(`${DOMAIN}/get-avatar/${TOKEN.GetToken()}/2.jpg`)
+      .get(`${DOMAIN}/get-self-info/${TOKEN.GetToken()}`)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+        setInfo(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
   };
   useEffect(() => {
-    console.log(TOKEN.GetToken());
+    console.log("Token for acc: " + TOKEN.GetToken());
     getSefInfo();
+    getAvatar();
   }, []);
+
+  const getAvatar = () => {
+    axios
+      .get(`${DOMAIN}/get-avatar/${TOKEN}/${info.Avatar}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
   const toggleExpand = () => {
     setExpanded(!expanded);
   };
@@ -97,7 +110,8 @@ export default function PersonalScreen({ navigation }) {
       if (response.didCancel) {
         console.log("User cancelled image picker");
       } else if (response.error) {
-        console.log("Image picker error: ", response.error);
+        //wallpapers.com/images/featured/ubuntu-z6rtxbp6rijb53hx.jpg
+        https: console.log("Image picker error: ", response.error);
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setSelectedImage(imageUri);
@@ -129,7 +143,9 @@ export default function PersonalScreen({ navigation }) {
   return (
     <>
       <ImageBackground
-        source={require("../../asset/images/design/bg.jpg")}
+        source={{
+          uri: info.Background ? info.Background : defaultTemplate.background,
+        }}
         style={styles.personal_bg}
       >
         <TouchableOpacity
@@ -137,7 +153,9 @@ export default function PersonalScreen({ navigation }) {
           onPress={handleCameraLaunch}
         >
           <Image
-            source={require("../../asset/images/design/avt.jpg")}
+            source={{
+              uri: `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${info.Avatar}`,
+            }}
             style={styles.personal_avatar}
           />
         </TouchableOpacity>
@@ -175,17 +193,19 @@ export default function PersonalScreen({ navigation }) {
           alignItems: "center",
         }}
       >
+        <Text style={styles.text}>{info.Name}</Text>
         <TouchableOpacity
           style={{
             justifyContent: "space-between",
             flexDirection: "row",
             alignItems: "center",
+            marginTop: 20,
           }}
           onPress={() => {
             navigation.navigate("Txt");
           }}
         >
-          <Entypo name="pencil" size={16} />
+          <Entypo name="pencil" color={Colors._yellow} size={16} />
           <Text style={styles.personal_text}>
             Cập nhật giới thiệu về bản thân
           </Text>
@@ -197,12 +217,13 @@ export default function PersonalScreen({ navigation }) {
             padding: 20,
             margin: 20,
             justifyContent: "space-between",
+            alignItems: "center",
             flexDirection: "row",
             borderRadius: 10,
           }}
         >
-          <Text>Viết nhật ký</Text>
-          <Entypo name="folder-images" size={20} color={Colors._pink} />
+          <Text style={styles.personal_text}>Viết nhật ký</Text>
+          <Entypo name="folder-images" size={24} color={Colors._yellow} />
         </View>
       </View>
       <View style={{ alignItems: "center", width: "100%" }}>
@@ -263,7 +284,8 @@ const styles = StyleSheet.create({
     borderColor: Colors._white,
   },
   personal_text: {
-    fontSize: 14,
+    fontSize: 12,
+    color: Colors._black,
     fontWeight: "500",
   },
   btn: {
@@ -295,6 +317,11 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 10,
+  },
+  text: {
+    color: Colors._black,
+    fontWeight: "bold",
+    fontSize: 16,
   },
   showMore: {
     color: "blue",

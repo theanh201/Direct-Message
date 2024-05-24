@@ -18,25 +18,24 @@ import Entypo from "react-native-vector-icons/Entypo";
 import Colors from "../../asset/styles/color";
 import { ValidateEmail, DOMAIN, TOKEN } from "../../config/const";
 import axios from "axios";
-
+import defaultTemplate from "../../config/config";
 export default function SearchScreen({ navigation }) {
   const [searchString, setSearchString] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [background, setBackground] = useState("");
   let pageNumber = 0;
-  const defaultImage =
-    "https://cdn-icons-png.flaticon.com/512/3177/3177440.png";
+  const defaultImage = defaultTemplate.avatar;
   const item = ({ item }) => (
     <View style={styles.friendContainer}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
           style={styles.img}
-          source={{ uri: item.Avatar ? item.Avatar : defaultImage }}
+          source={{
+            uri: item.Avatar
+              ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.Avatar}`
+              : defaultImage,
+          }}
         />
         <View style={styles.info}>
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
@@ -116,6 +115,7 @@ export default function SearchScreen({ navigation }) {
       form.append("token", TOKEN.GetToken());
       response = await axios.postForm(`${DOMAIN}/add-friend-request`, form);
       console.log(response.data);
+      Alert.alert("Đã gửi lời mời kết bạn");
     } catch (err) {
       console.error(err.response.data);
     }
@@ -168,7 +168,7 @@ export default function SearchScreen({ navigation }) {
         </TouchableHighlight>
       </View>
 
-      <Modal
+      {/* <Modal
         style={{ alignItems: "center" }}
         animationType="fade"
         transparent={true}
@@ -189,7 +189,7 @@ export default function SearchScreen({ navigation }) {
             <Image
               style={{ height: "30%", width: "100%", borderRadius: 10 }}
               source={{
-                uri: `${DOMAIN}/get-background/${TOKEN.GetToken()}/${background}`,
+                uri: `${DOMAIN}/get-background/${TOKEN.GetToken()}`,
               }}
             />
             <View style={{ alignItems: "center", top: -50 }}>
@@ -242,7 +242,7 @@ export default function SearchScreen({ navigation }) {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
 
       {/* RENDER SEARCH RESULT */}
       {loading ? (

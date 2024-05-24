@@ -62,8 +62,7 @@ export default function SignupScreen({ navigation }) {
           // Alert.alert("Đăng ký tài khoản thành công")
         })
         .catch((err) => {
-          r = err;
-          console.log("Error:", r.response.data);
+          console.log("Error:", err.response.data);
         });
     }
   };

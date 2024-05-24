@@ -1,22 +1,24 @@
 import { View, Text, Image, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Colors from "../asset/styles/color";
 import { TOKEN, DateIsAfterCurrent } from "../config/const";
 
 export default function SplashScreen({ navigation }) {
-  setTimeout(async () => {
-    await TOKEN.TokenReadFromStorage();
+  useEffect(() => {
+    setTimeout(async () => {
+      await TOKEN.TokenReadFromStorage();
 
-    let token = TOKEN.GetToken();
-    let timeout = TOKEN.GetTimeout();
-    console.log("Token from storage:", token);
-    console.log("Storage's token timeout:", timeout);
-    if (token === null || timeout === null || !DateIsAfterCurrent(timeout)) {
-      navigation.navigate("StartScreen");
-    } else {
-      navigation.navigate("StartScreen");
-    }
-  }, 3000);
+      let token = TOKEN.GetToken();
+      let timeout = TOKEN.GetTimeout();
+      console.log("Token from storage:", token);
+      console.log("Storage's token timeout:", timeout);
+      if (token === null || timeout === null || !DateIsAfterCurrent(timeout)) {
+        navigation.navigate("StartScreen");
+      } else {
+        navigation.navigate("StartScreen");
+      }
+    }, 3000);
+  }, []);
 
   return (
     <View style={{ alignItems: "center", padding: 14 }}>

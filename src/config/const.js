@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const DOMAIN = "http://192.168.0.104:8080";
+const DOMAIN = "http://192.168.1.101:8080";
 const ValidateEmail = (email) => {
   // Email validation regex pattern
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

@@ -8,7 +8,9 @@ import {
 } from "react-native";
 import React from "react";
 import Colors from "../asset/styles/color";
-
+import axios from "axios";
+import { sha256 } from "react-native-sha256";
+import { DOMAIN, TOKEN } from "../config/const";
 export default function StartScreen({ navigation }) {
   return (
     <ImageBackground
@@ -63,8 +65,28 @@ export default function StartScreen({ navigation }) {
             source={require("../asset/images/logo/google.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
-          <Text>TEST</Text>
+        <TouchableOpacity
+          onPress={async () => {
+            axios
+              .post(`${DOMAIN}/login`, {
+                username: "UserTest@gmail.com",
+                password: await sha256("Python5979"),
+              })
+              .then((response) => {
+                r = response.data;
+                TOKEN.SetToken(r.token, r.timeout);
+                navigation.navigate("HomeScreen");
+              })
+              .catch((err) => {
+                r = err;
+                console.log("error:", r);
+              });
+          }}
+        >
+          <Image
+            style={styles.logo}
+            source={require("../asset/images/logo/test.png")}
+          />
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -73,13 +95,13 @@ export default function StartScreen({ navigation }) {
 const styles = StyleSheet.create({
   list_logo: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    width: "50%",
+    justifyContent: "center",
     marginTop: 30,
   },
   logo: {
     width: 60,
     height: 60,
+    marginHorizontal: 10,
   },
   title: {
     color: Colors._white,
