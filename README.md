@@ -2,7 +2,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Introduction
 UI of ChatApp
-<img style="width:200px; height:700px" src="blob:https://chat.zalo.me/42c2a509-d945-40f9-852c-4a9f0d5842f1"/>
+Basic Chat Application
 
 # Getting Started
 
