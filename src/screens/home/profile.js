@@ -1,13 +1,19 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Colors from "../../asset/styles/color";
 import SwitchUser from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
 import PersonalScreen from "../Profile/personal";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import StartScreen from "../start";
+import AwsomeAleart from "../../components/awsome_aleart";
 
 export default function UserScreen({ navigation }) {
+  const [modalVisable, setModalVisable] = useState(false);
+  const onToggleAleart = () => {
+    setModalVisable(!modalVisable);
+  };
+  const onConfirm = () => {
+    navigation.replace("StartScreen");
+  };
   return (
     <View style={{ alignItems: "center" }}>
       <View
@@ -36,9 +42,9 @@ export default function UserScreen({ navigation }) {
             <Text style={styles.text}>Xem trang cá nhân</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <SwitchUser name="account-switch" size={25} color={Colors._blue} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <TouchableOpacity
@@ -62,12 +68,16 @@ export default function UserScreen({ navigation }) {
         </View>
         <Entypo name="chevron-right" size={24} color={Colors._blue} />
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.logout}
-        onPress={() => navigation.replace("StartScreen")}
-      >
+      <TouchableOpacity style={styles.logout} onPress={onToggleAleart}>
         <Text style={styles.logout_text}>Đăng xuất</Text>
       </TouchableOpacity>
+      <AwsomeAleart
+        title="Xác nhận"
+        message="Bạn có chắc muốn đăng xuất?"
+        visible={modalVisable}
+        onClose={onToggleAleart}
+        onConfirm={onConfirm}
+      />
     </View>
   );
 }

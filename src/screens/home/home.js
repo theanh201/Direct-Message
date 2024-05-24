@@ -86,31 +86,7 @@ export function HomeScreen({ navigation }) {
             },
           }}
         />
-        <Tab.Screen
-          name="Group"
-          component={StoryScreen}
-          options={{
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View style={styles.bottombar_item}>
-                  <AntDesign
-                    name="star"
-                    size={20}
-                    color={focused ? Colors._white : Colors._black}
-                  />
-                  <Text
-                    style={[
-                      styles.bottombar_text,
-                      focused && styles.bottombar_focused,
-                    ]}
-                  >
-                    Nhóm chat
-                  </Text>
-                </View>
-              );
-            },
-          }}
-        />
+
         <Tab.Screen
           name="Friends"
           component={Friends}
@@ -129,7 +105,7 @@ export function HomeScreen({ navigation }) {
                       focused && styles.bottombar_focused,
                     ]}
                   >
-                    Danh bạ
+                    Bạn bè
                   </Text>
                 </View>
               );

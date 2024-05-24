@@ -53,51 +53,6 @@ export default function PersonalScreen({ navigation }) {
     setExpanded(!expanded);
   };
 
-  const liststory = [
-    {
-      id: 1,
-      date: "28/04/2024",
-      describe: "Cập nhật ảnh đại diện",
-      img: require("../../asset/images/design/avt.jpg"),
-    },
-    {
-      id: 2,
-      date: "09/11/2023",
-      describe:
-        "Hải Phònglà một trong năm thành phố trực thuộc trung ương của Việt Nam. Đây là thành phố lớn thứ ba Việt Nam, thành phố cảng quan trọng, trung tâm công nghiệp, cảng biển, đồng thời cũng là trung tâm kinh tế, văn hóa, y tế, giáo dục, khoa học, thương mại và công nghệ thuộc Vùng duyên hải Bắc Bộ của Việt Nam.",
-      img: require("../../asset/images/design/user.jpg"),
-    },
-    {
-      id: 3,
-      date: "09/11/2023",
-      describe: "hello world",
-      img: require("../../asset/images/design/user.jpg"),
-    },
-    {
-      id: 4,
-      date: "09/11/2023",
-      describe: "hello world",
-      img: require("../../asset/images/design/user.jpg"),
-    },
-    {
-      id: 5,
-      date: "09/11/2023",
-      describe: "hello world",
-      img: require("../../asset/images/design/bg.jpg"),
-    },
-    {
-      id: 6,
-      date: "09/11/2023",
-      describe: "hello world",
-      img: require("../../asset/images/design/user.jpg"),
-    },
-    {
-      id: 7,
-      date: "09/11/2023",
-      describe: "hello world",
-      img: require("../../asset/images/design/user.jpg"),
-    },
-  ];
   const openImagePicker = () => {
     const options = {
       mediaType: "photo",
@@ -210,7 +165,7 @@ export default function PersonalScreen({ navigation }) {
             Cập nhật giới thiệu về bản thân
           </Text>
         </TouchableOpacity>
-        <View
+        {/* <View
           style={{
             backgroundColor: Colors._white,
             width: "100%",
@@ -224,42 +179,7 @@ export default function PersonalScreen({ navigation }) {
         >
           <Text style={styles.personal_text}>Viết nhật ký</Text>
           <Entypo name="folder-images" size={24} color={Colors._yellow} />
-        </View>
-      </View>
-      <View style={{ alignItems: "center", width: "100%" }}>
-        <FlatList
-          data={liststory}
-          scrollEnabled={true}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.story_item}>
-              <Text style={styles.txt_date}>{item.date}</Text>
-              <Text
-                numberOfLines={expanded ? undefined : 5}
-                style={styles.txt_content}
-                onLayout={(event) => {
-                  const { height } = event.nativeEvent.layout;
-                  const lineHeight = StyleSheet.flatten(
-                    styles.txt_content
-                  ).lineHeight;
-                  const calculatedNumLines = Math.floor(height / lineHeight);
-                  setNumLines(calculatedNumLines);
-                }}
-              >
-                {item.describe}
-              </Text>
-              {!expanded && numLines === 5 && (
-                <TouchableOpacity onPress={toggleExpand}>
-                  <Text style={styles.showMore}>Xem thêm</Text>
-                </TouchableOpacity>
-              )}
-              <Image source={item.img} style={styles.story_img} />
-            </View>
-          )}
-        />
-      </View>
-      <View style={{ height: 500, width: "100%" }}>
-        <Text>lkajfkdsf</Text>
+        </View> */}
       </View>
     </>
   );
