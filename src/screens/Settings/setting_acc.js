@@ -16,25 +16,39 @@ import { sha256 } from "react-native-sha256";
 import { DOMAIN, TOKEN } from "../../config/const";
 import axios from "axios";
 import AwsomeAleart from "../../components/awsome_aleart";
-export default function SettingAccout() {
+import CheckModal from "../../components/check";
+export default function SettingAccout({ navigation }) {
   const [visableChangePassword, setVissableChangePassword] = useState(false);
   const [visableChangeEmail, setVissableChangeEmail] = useState(false);
   const [visableChangeName, setVissableChangeName] = useState(false);
   const [visableDeleteAcc, setVissableDeleteAcc] = useState(false);
+  // new info
   const [newName, setNewName] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [delPassword, setDelPassword] = useState("");
   const [delEmail, setDelEmail] = useState("");
 
-  // Aleart
+  // Alert
   const [visableAlertChangeName, setVisableAlertChangeName] = useState(false);
   const [visableAlertChangePassword, setVisableAlertChangePassword] =
     useState(false);
+  const [visableAlertChangeEmail, setVisableAlertChangeEmail] = useState(false);
+  const [visableAlertDelAcc, setVisableAlertDelAcc] = useState(false);
+  const [showCheck, setShowCheck] = useState(false);
+  const ToggleCheck = () => {
+    setShowCheck(!showCheck);
+  };
   // Toggle
   const onToggleChangeName = () =>
     setVisableAlertChangeName(!visableAlertChangeName);
-
+  const onToggleChangePassword = () =>
+    setVisableAlertChangePassword(!visableAlertChangePassword);
+  const onToggleChangeEmail = () =>
+    setVisableAlertChangeEmail(!visableAlertChangeEmail);
+  const onToggleDelAcc = () => setVisableAlertDelAcc(!visableAlertDelAcc);
+  // Handle Event
   const handleChangeName = () => {
     let formData = new FormData();
     formData.append("token", TOKEN.GetToken());
@@ -45,6 +59,7 @@ export default function SettingAccout() {
         console.log(response.data);
         setVisableAlertChangeName(false);
         setVissableChangeName(false);
+        ToggleCheck();
       })
       .catch((error) => console.log(error.response.data));
   };
@@ -56,18 +71,40 @@ export default function SettingAccout() {
       .putForm(`${DOMAIN}/update-password`, formData)
       .then((response) => {
         console.log(response.data);
+        setVisableAlertChangePassword(false);
+        setVissableChangePassword(false);
+        ToggleCheck();
+      })
+      .catch((error) => console.log(error.response.data));
+  };
+
+  const handleChangeEmail = () => {
+    let formData = new FormData();
+    formData.append("token", TOKEN.GetToken());
+    formData.append("email", newEmail);
+    axios
+      .putForm(`${DOMAIN}/update-email`, formData)
+      .then((response) => {
+        console.log(response.data);
+        setVisableAlertChangeEmail(false);
+        setVissableChangeEmail(false);
+        ToggleCheck();
       })
       .catch((error) => console.log(error.response.data));
   };
 
   const handleDeleteAccout = async () => {
-    let token = TOKEN.GetToken();
     axios
-      .delete(`${DOMAIN}/delete-self/${token}/${delEmail}/${delPassword}`)
+      .delete(
+        `${DOMAIN}/delete-self/${delEmail}/${delPassword}/${TOKEN.GetToken()}`
+      )
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
+        setVisableAlertDelAcc(false);
+        setVisseDelAcc(false);
+        ToggleCheck();
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => console.log(error));
   };
   return (
     <ScrollView
@@ -185,11 +222,23 @@ export default function SettingAccout() {
                 placeholderTextColor={Colors._black}
               />
             </View>
-            <TouchableOpacity style={styles.btn_confirm}>
+            <TouchableOpacity
+              style={styles.btn_confirm}
+              onPress={() =>
+                setVisableAlertChangePassword(!visableAlertChangeEmail)
+              }
+            >
               <Text style={styles.text_confirm}>Xác nhận</Text>
             </TouchableOpacity>
           </View>
         )}
+        <AwsomeAleart
+          title="Xác nhận đổi mật khẩu"
+          message="Bạn có chắc muốn đổỉ mật khẩu?"
+          visible={visableAlertChangePassword}
+          onClose={onToggleChangePassword}
+          onConfirm={handleChangePassword}
+        />
 
         {/* Change Email */}
         <TouchableHighlight
@@ -214,12 +263,17 @@ export default function SettingAccout() {
           <View style={styles.form}>
             <View style={styles.box_input}>
               <TextInput
+                value={newEmail}
+                onChangeText={(value) => setNewEmail(value)}
                 style={styles.input}
                 placeholder="Nhập email mới"
                 placeholderTextColor={Colors._black}
               />
             </View>
-            <TouchableOpacity style={styles.btn_confirm}>
+            <TouchableOpacity
+              onPress={handleChangeEmail}
+              style={styles.btn_confirm}
+            >
               <Text style={styles.text_confirm}>Xác nhận</Text>
             </TouchableOpacity>
           </View>
@@ -264,12 +318,28 @@ export default function SettingAccout() {
                 placeholderTextColor={Colors._black}
               />
             </View>
-            <TouchableOpacity style={styles.btn_confirm}>
+            <TouchableOpacity
+              style={styles.btn_confirm}
+              onPress={() => setVisableAlertDelAcc(!visableAlertDelAcc)}
+            >
               <Text style={styles.text_confirm}>Xác nhận</Text>
             </TouchableOpacity>
           </View>
         )}
+        <AwsomeAleart
+          title="Xác nhận đổi xóa tài khoản"
+          message="Bạn có chắc muốn xóa tài khoản?"
+          visible={visableAlertDelAcc}
+          onClose={onToggleDelAcc}
+          onConfirm={handleDeleteAccout}
+        />
       </View>
+      <CheckModal
+        message="Chúc mừng"
+        title="Thực hiện thành công"
+        visable={showCheck}
+        onClose={ToggleCheck}
+      />
     </ScrollView>
   );
 }

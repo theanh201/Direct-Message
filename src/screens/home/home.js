@@ -23,6 +23,7 @@ import Profile from "./profile";
 import Friends from "./friends";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HeaderComponent from "../../components/header";
+import Test from "../test";
 
 export function HomeScreen({ navigation }) {
   const theme = "light";
@@ -80,6 +81,32 @@ export function HomeScreen({ navigation }) {
                     ]}
                   >
                     Nhắn tin
+                  </Text>
+                </View>
+              );
+            },
+          }}
+        />
+
+        <Tab.Screen
+          name="Test"
+          component={Test}
+          options={{
+            tabBarIcon: ({ focused }) => {
+              return (
+                <View style={styles.bottombar_item}>
+                  <Entypo
+                    name="message"
+                    size={20}
+                    color={focused ? Colors._white : Colors._black}
+                  />
+                  <Text
+                    style={[
+                      styles.bottombar_text,
+                      focused && styles.bottombar_focused,
+                    ]}
+                  >
+                    Test
                   </Text>
                 </View>
               );

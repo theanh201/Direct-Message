@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors._white,
     padding: 20,
     borderRadius: 20,
-    width: "70%",
+    width: "80%",
     alignItems: "center",
   },
   list_btn: {
@@ -66,6 +66,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     alignItems: "center",
+    shadowColor: Colors._black,
+    elevation: 5,
   },
   text: {
     color: Colors._black,
