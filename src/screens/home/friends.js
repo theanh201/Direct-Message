@@ -12,15 +12,20 @@ import {
 import axios from "axios";
 import Colors from "../../asset/styles/color";
 import Feather from "react-native-vector-icons/Feather";
-import Entypo from "react-native-vector-icons/Entypo";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { DOMAIN, TOKEN } from "../../config/const";
 import { SafeAreaView } from "react-native-safe-area-context";
 import defaultTemplate from "../../config/config";
-
+import LottieView from "lottie-react-native";
+import CheckModal from "../../components/check";
+import Button from "react-native-really-awesome-button";
 const MyComponent = ({ navigation }) => {
   const [friendList, setFriendList] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [visibleCheck, setVisableCheck] = useState(false);
+  const ToggleCheck = () => {
+    setVisableCheck(!visibleCheck);
+  };
   useEffect(() => {
     fetchData();
     console.log("FriendList:");
@@ -44,60 +49,74 @@ const MyComponent = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
-        <ActivityIndicator size="large" color={Colors._blue} />
+        <LottieView
+          style={{ width: 200, height: 200 }}
+          source={require("../../asset/templates/loading3.json")}
+          autoPlay
+          loop
+        />
       ) : friendList ? (
-        <FlatList
-          data={friendList}
-          style={{}}
-          renderItem={({ item }) => (
-            <View style={styles.friend}>
-              <Image
-                style={styles.img}
-                source={{
-                  uri: item.Info.Avatar
-                    ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${
-                        item.Info.Avatar
-                      }`
-                    : defaultTemplate.avatar,
-                }}
-              />
-              <View style={styles.info}>
-                <Text style={styles.text}>{item.Info.Name}</Text>
-
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 10,
+        <View>
+          <FlatList
+            data={friendList}
+            style={{}}
+            renderItem={({ item }) => (
+              <View style={styles.friend}>
+                <Image
+                  style={styles.img}
+                  source={{
+                    uri: item.Info.Avatar
+                      ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${
+                          item.Info.Avatar
+                        }`
+                      : defaultTemplate.avatar,
                   }}
-                >
-                  <TouchableOpacity
-                    style={[styles.btn, { backgroundColor: Colors._green }]}
+                />
+                <View style={styles.info}>
+                  <Text style={styles.text}>{item.Info.Name}</Text>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: 10,
+                    }}
                   >
-                    <Feather
-                      name="phone-call"
-                      size={20}
-                      color={Colors._white}
-                    />
-                    <Text style={styles.textConfirm}>Gọi điện</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => handleChat(item)}
-                    style={[styles.btn, { backgroundColor: Colors._blue }]}
-                  >
-                    <Feather
-                      name="message-square"
-                      size={20}
-                      color={Colors._white}
-                    />
-                    <Text style={styles.textConfirm}>Nhắm tin</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.btn, { backgroundColor: Colors._green }]}
+                      onPress={ToggleCheck}
+                    >
+                      <Feather
+                        name="phone-call"
+                        size={20}
+                        color={Colors._white}
+                      />
+                      <Text style={styles.textConfirm}>Gọi điện</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleChat(item)}
+                      style={[styles.btn, { backgroundColor: Colors._blue }]}
+                    >
+                      <Feather
+                        name="message-square"
+                        size={20}
+                        color={Colors._white}
+                      />
+                      <Text style={styles.textConfirm}>Nhắm tin</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
-        />
+            )}
+          />
+          <CheckModal
+            tittle="Thành công"
+            message="Gọi thành công"
+            visable={visibleCheck}
+            onClose={ToggleCheck}
+          />
+        </View>
       ) : (
         <Text>Hiện không có bạn bè</Text>
       )}

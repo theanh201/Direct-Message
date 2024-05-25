@@ -1,65 +1,41 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, ImageBackground } from "react-native";
 import React, { useEffect } from "react";
 import Colors from "../asset/styles/color";
 import { TOKEN, DateIsAfterCurrent } from "../config/const";
-
+import LottieView from "lottie-react-native";
 export default function SplashScreen({ navigation }) {
+  const SetUpTOKEN = async () => {
+    await TOKEN.TokenReadFromStorage();
+    let token = TOKEN.GetToken();
+    let timeout = TOKEN.GetTimeout();
+    console.log("Token from storage:", token);
+    console.log("Storage's token timeout:", timeout);
+    if (token === null || timeout === null || !DateIsAfterCurrent(timeout)) {
+      navigation.navigate("StartScreen");
+    } else {
+      navigation.navigate("StartScreen");
+    }
+  };
   useEffect(() => {
-    setTimeout(async () => {
-      await TOKEN.TokenReadFromStorage();
-
-      let token = TOKEN.GetToken();
-      let timeout = TOKEN.GetTimeout();
-      console.log("Token from storage:", token);
-      console.log("Storage's token timeout:", timeout);
-      if (token === null || timeout === null || !DateIsAfterCurrent(timeout)) {
-        navigation.navigate("StartScreen");
-      } else {
-        navigation.navigate("StartScreen");
-      }
-    }, 3000);
-  }, []);
+    const timer = setTimeout(() => {
+      SetUpTOKEN();
+      navigation.navigate("StartScreen");
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
   return (
-    <View style={{ alignItems: "center", padding: 14 }}>
-      <Image
-        style={{
-          width: 340,
-          height: 200,
-          resizeMode: "cover",
-          borderRadius: 20,
-        }}
-        source={require("../asset/images/design/splash.jpeg")}
-      />
-      <Text style={styles.splash_text}>cHAAT</Text>
-      <View
-        style={{
-          flexDirection: "row",
-          width: "80%",
-          justifyContent: "space-between",
-        }}
-      >
-        <View style={styles.splash_box}>
-          <Text style={styles.splash_primary_txt}>c</Text>
-          <Text style={styles.splash_text}>hat</Text>
-        </View>
-        <View style={styles.splash_box}>
-          <Text style={styles.splash_primary_txt}>H</Text>
-          <Text style={styles.splash_text}>uy</Text>
-        </View>
-        <View style={styles.splash_box}>
-          <Text style={styles.splash_primary_txt}>A</Text>
-          <Text style={styles.splash_text}>n</Text>
-        </View>
-        <View style={styles.splash_box}>
-          <Text style={styles.splash_primary_txt}>A</Text>
-          <Text style={styles.splash_text}>nh</Text>
-        </View>
-        <View style={styles.splash_box}>
-          <Text style={styles.splash_primary_txt}>T</Text>
-          <Text style={styles.splash_text}>iến</Text>
-        </View>
+    <View style={[StyleSheet.absoluteFillObject, styles.overlay]}>
+      <View>
+        <Text>Hello</Text>
       </View>
+
+      <LottieView
+        style={{ flex: 1 }}
+        source={require("../asset/templates/loading3.json")}
+        autoPlay
+        loop
+      />
     </View>
   );
 }
@@ -68,6 +44,9 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "bold",
     fontSize: 20,
+  },
+  overlay: {
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
   },
   splash_box: {
     flexDirection: "row",

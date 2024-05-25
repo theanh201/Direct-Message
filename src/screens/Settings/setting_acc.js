@@ -78,11 +78,23 @@ export default function SettingAccout() {
         <Text style={styles.title}>Tài khoản</Text>
         <TouchableOpacity>
           <View style={styles.box}>
-            <Image source={{ uri: defaultTemplate.avatar }} />
+            <Image
+              style={{ width: 50, height: 50 }}
+              source={{ uri: defaultTemplate.avatar }}
+            />
             <View>
               <Text style={styles.text}>Thông tin cá nhân</Text>
               <Text style={styles.text}>Đào Đức Huy</Text>
             </View>
+          </View>
+        </TouchableOpacity>
+        {/* EMAIL INFO */}
+        <TouchableOpacity style={[{ paddingHorizontal: 25 }, styles.box]}>
+          <Entypo name="mail" color={Colors._black} size={30} />
+
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.text}>Địa chỉ Email</Text>
+            <Text style={styles.text}>huymobile5979@gmail.com</Text>
           </View>
         </TouchableOpacity>
         {/* Change UserName */}
@@ -130,23 +142,6 @@ export default function SettingAccout() {
           onClose={onToggleChangeName}
           onConfirm={handleChangeName}
         />
-        {/* PHONE */}
-        <View style={styles.box}>
-          <Entypo name="phone" color={Colors._black} size={20} />
-          <View>
-            <Text style={styles.text}>Số điện thoại</Text>
-            <Text style={styles.text}>0912786313</Text>
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.box}>
-          <Entypo name="mail" color={Colors._black} size={20} />
-
-          <View>
-            <Text style={styles.text}>Địa chỉ Email</Text>
-            <Text style={styles.text}>huymobile5979@gmail.com</Text>
-          </View>
-        </TouchableOpacity>
       </View>
 
       <View>

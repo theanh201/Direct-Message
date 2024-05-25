@@ -8,6 +8,7 @@ INJECTED from /home/huyonic/Documents/Mobile/Project/Direct-Message/android/app/
 MERGED from [:dr.pogodin_react-native-fs] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/@dr.pogodin/react-native-fs/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-async-storage_async-storage] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/@react-native-async-storage/async-storage/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-masked-view_masked-view] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/@react-native-masked-view/masked-view/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
+MERGED from [:lottie-react-native] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/lottie-react-native/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-fs] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-fs/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-gesture-handler] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-image-picker] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-19:12
@@ -19,6 +20,7 @@ MERGED from [:react-native-sha256] /home/huyonic/Documents/Mobile/Project/Direct
 MERGED from [:react-native-vector-icons] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-vector-icons/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [com.facebook.react:react-android:0.74.1] /home/huyonic/.gradle/caches/transforms-4/441abbc29e7844d504dda1a0ffede014/transformed/jetified-react-android-0.74.1-debug/AndroidManifest.xml:2:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/huyonic/.gradle/caches/transforms-4/bcd1aaab3390fd5a0905d07d3a934f98/transformed/jetified-appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
+MERGED from [com.airbnb.android:lottie:6.4.0] /home/huyonic/.gradle/caches/transforms-4/07b9ffaf3f38f6d1465033b44e6fa44e/transformed/jetified-lottie-6.4.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.material:material:1.6.1] /home/huyonic/.gradle/caches/transforms-4/452ffdcf9637ac22e3426671d55dd6fb/transformed/material-1.6.1/AndroidManifest.xml:17:1-26:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /home/huyonic/.gradle/caches/transforms-4/ff18ce5ce91074d01800a4709d6a852e/transformed/constraintlayout-2.0.1/AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] /home/huyonic/.gradle/caches/transforms-4/346f569ba9d365042b456e7e69a1a638/transformed/appcompat-1.6.1/AndroidManifest.xml:17:1-22:12
@@ -116,6 +118,8 @@ MERGED from [:react-native-image-picker] /home/huyonic/Documents/Mobile/Project/
 MERGED from [:react-native-image-picker] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-image-picker/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:7:5-17:19
 MERGED from [com.facebook.react:react-android:0.74.1] /home/huyonic/.gradle/caches/transforms-4/441abbc29e7844d504dda1a0ffede014/transformed/jetified-react-android-0.74.1-debug/AndroidManifest.xml:18:5-22:19
 MERGED from [com.facebook.react:react-android:0.74.1] /home/huyonic/.gradle/caches/transforms-4/441abbc29e7844d504dda1a0ffede014/transformed/jetified-react-android-0.74.1-debug/AndroidManifest.xml:18:5-22:19
+MERGED from [com.airbnb.android:lottie:6.4.0] /home/huyonic/.gradle/caches/transforms-4/07b9ffaf3f38f6d1465033b44e6fa44e/transformed/jetified-lottie-6.4.0/AndroidManifest.xml:7:5-20
+MERGED from [com.airbnb.android:lottie:6.4.0] /home/huyonic/.gradle/caches/transforms-4/07b9ffaf3f38f6d1465033b44e6fa44e/transformed/jetified-lottie-6.4.0/AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.material:material:1.6.1] /home/huyonic/.gradle/caches/transforms-4/452ffdcf9637ac22e3426671d55dd6fb/transformed/material-1.6.1/AndroidManifest.xml:24:5-20
 MERGED from [com.google.android.material:material:1.6.1] /home/huyonic/.gradle/caches/transforms-4/452ffdcf9637ac22e3426671d55dd6fb/transformed/material-1.6.1/AndroidManifest.xml:24:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /home/huyonic/.gradle/caches/transforms-4/ff18ce5ce91074d01800a4709d6a852e/transformed/constraintlayout-2.0.1/AndroidManifest.xml:9:5-20
@@ -194,6 +198,8 @@ MERGED from [:react-native-async-storage_async-storage] /home/huyonic/Documents/
 MERGED from [:react-native-async-storage_async-storage] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/@react-native-async-storage/async-storage/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:react-native-masked-view_masked-view] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/@react-native-masked-view/masked-view/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:react-native-masked-view_masked-view] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/@react-native-masked-view/masked-view/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:lottie-react-native] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/lottie-react-native/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:lottie-react-native] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/lottie-react-native/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:react-native-fs] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-fs/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:react-native-fs] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-fs/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:react-native-gesture-handler] /home/huyonic/Documents/Mobile/Project/Direct-Message/node_modules/react-native-gesture-handler/android/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-44
@@ -216,6 +222,8 @@ MERGED from [com.facebook.react:react-android:0.74.1] /home/huyonic/.gradle/cach
 MERGED from [com.facebook.react:react-android:0.74.1] /home/huyonic/.gradle/caches/transforms-4/441abbc29e7844d504dda1a0ffede014/transformed/jetified-react-android-0.74.1-debug/AndroidManifest.xml:10:5-44
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/huyonic/.gradle/caches/transforms-4/bcd1aaab3390fd5a0905d07d3a934f98/transformed/jetified-appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/huyonic/.gradle/caches/transforms-4/bcd1aaab3390fd5a0905d07d3a934f98/transformed/jetified-appcompat-resources-1.6.1/AndroidManifest.xml:20:5-44
+MERGED from [com.airbnb.android:lottie:6.4.0] /home/huyonic/.gradle/caches/transforms-4/07b9ffaf3f38f6d1465033b44e6fa44e/transformed/jetified-lottie-6.4.0/AndroidManifest.xml:5:5-44
+MERGED from [com.airbnb.android:lottie:6.4.0] /home/huyonic/.gradle/caches/transforms-4/07b9ffaf3f38f6d1465033b44e6fa44e/transformed/jetified-lottie-6.4.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.material:material:1.6.1] /home/huyonic/.gradle/caches/transforms-4/452ffdcf9637ac22e3426671d55dd6fb/transformed/material-1.6.1/AndroidManifest.xml:20:5-22:41
 MERGED from [com.google.android.material:material:1.6.1] /home/huyonic/.gradle/caches/transforms-4/452ffdcf9637ac22e3426671d55dd6fb/transformed/material-1.6.1/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /home/huyonic/.gradle/caches/transforms-4/ff18ce5ce91074d01800a4709d6a852e/transformed/constraintlayout-2.0.1/AndroidManifest.xml:5:5-7:41

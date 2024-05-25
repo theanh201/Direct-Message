@@ -15,10 +15,8 @@ import axios from "axios";
 import Colors from "../../asset/styles/color";
 import Feather from "react-native-vector-icons/Feather";
 import { DOMAIN, TOKEN } from "../../config/const";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Button } from "@rneui/base";
-import { configureLayoutAnimationBatch } from "react-native-reanimated/lib/typescript/reanimated2/core";
 import defaultTemplate from "../../config/config";
+import LottieView from "lottie-react-native";
 export default function FriendRequest({ navigation }) {
   const [request, setRequest] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +30,8 @@ export default function FriendRequest({ navigation }) {
         `${DOMAIN}/get-friend-request/${TOKEN.GetToken()}`
       );
       list = [];
-      console.log(TOKEN.GetToken());
+      console.log(response.data);
+
       for (const user of response.data) {
         // const entry = {
         //   email: user.From.Email,
@@ -47,19 +46,23 @@ export default function FriendRequest({ navigation }) {
         list.push(user.From);
       }
       setRequest(list);
-      console.log("data=" + request);
+      console.log(request);
     } catch (err) {}
     setLoading(false);
   };
   return (
     <ImageBackground
-      style={{ height: "100%" }}
+      style={{ height: "100%", alignItems: "center" }}
       resizeMode="cover"
       source={require("../../asset/images/design/bg_main.jpeg")}
     >
       {loading ? (
-        <ActivityIndicator size="large" color={Colors._blue} />
-      ) : request !== null ? (
+        <LottieView
+          source={require("../../asset/templates/loading3.json")}
+          autoPlay
+          loop
+        />
+      ) : request.length != 0 ? (
         // <Text style={styles.text}>{request[0].Email}</Text>
         <FlatList
           style={{ padding: 15 }}
@@ -142,7 +145,18 @@ export default function FriendRequest({ navigation }) {
           )}
         />
       ) : (
-        <Text style={styles.textConfirm}>Hiện không có lời mời kết bạn</Text>
+        <View style={{ marginTop: 100, alignItems: "center" }}>
+          <Text style={styles.textConfirm}>Hiện không có lời mời kết bạn</Text>
+          <LottieView
+            style={{ marginTop: 50, width: 150, height: 150 }}
+            source={require("../../asset/templates/smile.json")}
+            autoPlay
+          />
+          <Image
+            style={{ width: 200, height: 200, borderRadius: 20, marginTop: 50 }}
+            source={require("../../asset/images/design/nofriend.jpg")}
+          />
+        </View>
       )}
     </ImageBackground>
   );

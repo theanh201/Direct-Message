@@ -19,6 +19,7 @@ import Colors from "../../asset/styles/color";
 import { ValidateEmail, DOMAIN, TOKEN } from "../../config/const";
 import axios from "axios";
 import defaultTemplate from "../../config/config";
+import LottieView from "lottie-react-native";
 export default function SearchScreen({ navigation }) {
   const [searchString, setSearchString] = useState("");
   const [loading, setLoading] = useState(false);
@@ -259,8 +260,18 @@ export default function SearchScreen({ navigation }) {
           keyExtractor={(item) => item.email}
         />
       ) : (
-        <View style={{ alignItems: "center", marginTop: 200 }}>
+        <View style={{ alignItems: "center", marginTop: 150 }}>
           <Text style={styles.text}>Chưa có kết quả Tìm kiếm</Text>
+          <LottieView
+            style={{
+              flex: 1,
+              width: 300,
+              height: 300,
+            }}
+            source={require("../../asset/templates/search.json")}
+            autoPlay
+            loop
+          />
         </View>
       )}
     </View>

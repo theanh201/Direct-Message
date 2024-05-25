@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.chatapp-mergeDebugResources-31:/values-cs/values-cs.xml",
+            "outputFile": "com.chatapp-mergeDebugResources-32:/values-cs/values-cs.xml",
             "map": [
                 {
                     "source": "/home/huyonic/.gradle/caches/transforms-4/346f569ba9d365042b456e7e69a1a638/transformed/appcompat-1.6.1/res/values-cs/values-cs.xml",

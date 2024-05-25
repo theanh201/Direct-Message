@@ -17,6 +17,8 @@ import com.drpogodin.reactnativefs.ReactNativeFsPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 // @react-native-masked-view/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
+// lottie-react-native
+import com.airbnb.android.react.lottie.LottiePackage;
 // react-native-fs
 import com.rnfs.RNFSPackage;
 // react-native-gesture-handler
@@ -83,6 +85,7 @@ public class PackageList {
       new ReactNativeFsPackage(),
       new AsyncStoragePackage(),
       new RNCMaskedViewPackage(),
+      new LottiePackage(),
       new RNFSPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
