@@ -56,7 +56,7 @@ export default function App() {
           <myStack.Screen
             name="ChatScreen"
             component={ChatScreen}
-            options={{ headerShown: false }}
+            options={{}}
           />
           <myStack.Screen
             name="PersonalScreen"

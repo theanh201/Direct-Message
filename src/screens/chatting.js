@@ -9,16 +9,18 @@ import {
   View,
 } from "react-native";
 import { DOMAIN, TOKEN } from "../config/const";
+import ProcessString from "../config/processstring";
 import Colors from "../asset/styles/color";
+import axios from "axios";
 const ChatScreen = ({ route }) => {
   const friend = route.params;
   const [listMessages, setListMessages] = useState([]);
   const [message, setMessage] = useState("");
   const websocket = new WebSocket("ws://192.168.1.101:8080/ws");
+
   useEffect(() => {
     // Initialize WebSocket connection
-    console.log("Chat with:");
-    console.log(friend.item.Info.Name);
+    console.log(listMessages);
     websocket.onopen = () => {
       console.log("WebSocket connection opened");
       onl_mess = {
@@ -27,15 +29,14 @@ const ChatScreen = ({ route }) => {
       };
       websocket.send(JSON.stringify(onl_mess));
       console.log("Sent online notification to server");
+      getAllMessage();
     };
 
     websocket.onmessage = (event) => {
-      console.log(event.data);
+      jsonData = ProcessString(event.data);
+
+      setListMessages((prevMessages) => [...prevMessages, jsonData.Content]);
     };
-    //   const newMessage = event.data;
-    //   setMessages(prevMessages => [...prevMessages, newMessage]);
-    //   console.log('Message from server:', newMessage);
-    // };
 
     websocket.onerror = (error) => {
       console.error("WebSocket error:", error);
@@ -51,6 +52,13 @@ const ChatScreen = ({ route }) => {
     };
   }, []);
 
+  const getAllMessage = () => {
+    axios
+      .get(`${DOMAIN}/get-all-message/${TOKEN.GetToken()}`)
+      .then((response) => console.log(response.data))
+      .catch((error) => console.log(error.response.data));
+  };
+
   const sendMessage = () => {
     if (websocket) {
       data = {
@@ -60,6 +68,10 @@ const ChatScreen = ({ route }) => {
         email: friend.item.Info.Email,
       };
       websocket.send(JSON.stringify(data));
+      const myMessage = "^" + data.content;
+      setListMessages((preMessage) => [...preMessage, myMessage]);
+
+      console.log(listMessages);
       setMessage("");
     }
   };
@@ -78,8 +90,24 @@ const ChatScreen = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={message}
-        renderItem={({ item }) => <Text style={styles.message}>{item}</Text>}
+        style={styles.chat}
+        data={listMessages}
+        renderItem={({ item }) => (
+          <View style={styles.boxchat}>
+            <Text
+              style={[
+                styles.basemessage,
+                item
+                  ? item.indexOf("^") == 0
+                    ? styles.yourmessage
+                    : styles.friendmessage
+                  : styles.nullmessage,
+              ]}
+            >
+              {item ? item.replace("^", "") : ""}
+            </Text>
+          </View>
+        )}
         keyExtractor={(item, index) => index.toString()}
       />
       <View style={styles.inputContainer}>
@@ -90,6 +118,7 @@ const ChatScreen = ({ route }) => {
           placeholder="Type a message"
           placeholderTextColor={Colors._black}
         />
+
         <Button title="Send" onPress={sendMessage} />
       </View>
     </SafeAreaView>
@@ -102,10 +131,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 20,
   },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   input: {
     flex: 1,
     borderWidth: 1,
@@ -114,11 +139,37 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: Colors._black,
   },
-  message: {
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  chat: {},
+  boxchat: {
+    width: "100%",
+  },
+  basemessage: {
+    maxWidth: 250,
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    color: Colors._black,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    color: Colors._white,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    marginVertical: 2,
+  },
+  friendmessage: {
+    borderBottomRightRadius: 20,
+    backgroundColor: Colors._blue,
+  },
+  yourmessage: {
+    marginLeft: 100,
+
+    textAlign: "right",
+    borderBottomLeftRadius: 20,
+    backgroundColor: Colors._green,
+  },
+  nullmessage: {
+    backgroundColor: "transparent",
   },
 });
 

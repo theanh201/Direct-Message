@@ -69,7 +69,7 @@ export default function StartScreen({ navigation }) {
           onPress={async () => {
             axios
               .post(`${DOMAIN}/login`, {
-                username: "UserTest@gmail.com",
+                username: "UserText@gmail.com",
                 password: await sha256("Python5979"),
               })
               .then((response) => {
