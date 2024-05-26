@@ -49,7 +49,7 @@ const ChatScreen = ({ route, navigation }) => {
 
     websocket.onmessage = (event) => {
       jsonData = ProcessString(event.data);
-
+      console.log(jsonData);
       setListMessages((prevMessages) => [...prevMessages, jsonData.Content]);
     };
 
@@ -75,7 +75,6 @@ const ChatScreen = ({ route, navigation }) => {
         }`
       )
       .then((response) => {
-        console.log(response.data);
         response.data.map((msg) => {
           setListMessages((preMessage) => [
             ...preMessage,
@@ -86,7 +85,6 @@ const ChatScreen = ({ route, navigation }) => {
             { time: msg.Since, content: msg.Content },
           ]);
         });
-        console.log(testMess);
       })
       .catch((error) => console.log(error));
   };

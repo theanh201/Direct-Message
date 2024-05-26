@@ -15,7 +15,8 @@ import { sha256 } from "react-native-sha256";
 import axios from "axios";
 import Colors from "../asset/styles/color";
 import Entypo from "react-native-vector-icons/Entypo";
-import { ThemedButton } from "react-native-really-awesome-button";
+import Button, { ThemedButton } from "react-native-really-awesome-button";
+import { USECACHE } from "../config/cache";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -39,11 +40,45 @@ export default function LoginScreen({ navigation }) {
     setIsFormValid(Object.keys(error).length === 0);
   };
 
+  const fetchUserData = () => {
+    axios
+      .get(`${DOMAIN}/get-self-info/${TOKEN.GetToken()}`)
+      .then((response) => {
+        console.log(response.data);
+        USECACHE.SetData("info", response.data);
+      })
+      .catch((error) => console.log(error));
+  };
+  const fetchUserFriends = () => {
+    axios
+      .get(`${DOMAIN}/get-friend-list/${TOKEN.GetToken()}`)
+      .then((response) => {
+        listFriends = response.data;
+        listFriends.map((item) => {
+          USECACHE.SetData(item.Info.Email, {
+            Avatar: item.Info.Avatar,
+            Background: item.Info.Background,
+            Name: item.Info.Name,
+            Since: item.Since,
+          });
+        });
+      })
+      .catch((e) => console.log(e));
+  };
+  // const fetchUserMessage = () => {
+  //   axios
+  //     .get(`${DOMAIN}/get-all-message/${TOKEN.GetToken()}`)
+  //     .then((response) => {
+  //       listMessages = response.data
+  //       listMessages.map((msg)=>{
+  //         USECACHE.
+  //       })
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
   const handleLogin = async () => {
-    console.log("Login Again");
-    console.log(email);
-    console.log(password);
     // Basic email and password validation
+    // If form valid => handleLogin
     if (isFormValid) {
       axios
         .post(`${DOMAIN}/login`, {
@@ -54,11 +89,14 @@ export default function LoginScreen({ navigation }) {
           r = response.data;
           console.log("Token receive:", r);
           TOKEN.SetToken(r.token, r.timeout);
-          navigation.navigate("HomeScreen");
+          console.log("Data Loading...");
+          fetchUserData();
+          fetchUserFriends();
+          // fetchUserMessage();
+          navigation.replace("HomeScreen");
         })
         .catch((err) => {
-          r = err;
-          console.log("error:", r);
+          console.log("error:", error.response.data);
         });
     }
     // hash password and make request
@@ -101,6 +139,7 @@ export default function LoginScreen({ navigation }) {
           <View style={styles.box_input}>
             <Entypo name="key" color={Colors._black} size={20} />
             <TextInput
+              secureTextEntry={true}
               style={styles.input}
               placeholder="Mật khẩu"
               placeholderTextColor="gray"
@@ -121,6 +160,7 @@ export default function LoginScreen({ navigation }) {
       >
         <Text style={styles.text}>Đăng nhập</Text>
       </TouchableHighlight>
+
       <View
         style={{
           borderBottomColor: Colors._white,
