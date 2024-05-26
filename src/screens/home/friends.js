@@ -19,10 +19,14 @@ import defaultTemplate from "../../config/config";
 import LottieView from "lottie-react-native";
 import CheckModal from "../../components/check";
 import Button from "react-native-really-awesome-button";
+import {ZegoSendCallInvitationButton} from "@zegocloud/zego-uikit-prebuilt-call-rn"
 const MyComponent = ({ navigation }) => {
   const [friendList, setFriendList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleCheck, setVisableCheck] = useState(false);
+  const userID = 'defaut';
+  const userName = 'defaut';
+
   const ToggleCheck = () => {
     setVisableCheck(!visibleCheck);
   };
@@ -46,6 +50,26 @@ const MyComponent = ({ navigation }) => {
   const handleChat = (item) => {
     navigation.navigate("ChatScreen", { item });
   };
+
+  const initService = () => {
+    ZegoUIKitPrebuiltCallService.init(
+      2105949447,
+      "1da962453e140c11829e6b93d19172832038aef94b1324f1357a7066111790c3",
+      userID,
+      userName,
+      [ZIM, ZPNs],
+      {
+        ringtoneConfig: {
+          incomingCallFileName: 'zego_incoming.mp3',
+          outgoingCallFileName: 'zego_outgoing.mp3',
+        },
+        androidNotificationConfig: {
+          channelID: "ZegoUIKit",
+          channelName: "ZegoUIKit",
+        },
+      });
+  }
+  initService();
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (
@@ -83,7 +107,12 @@ const MyComponent = ({ navigation }) => {
                       marginTop: 10,
                     }}
                   >
-                    <TouchableOpacity
+                    <ZegoSendCallInvitationButton
+                    invitees={[{userID: item.Info.Name, userName: item.Info.Name}]}
+                    isVideoCall={true}
+                    resourceID={"chatApp"}
+                    />
+                    {/* <TouchableOpacity
                       style={[styles.btn, { backgroundColor: Colors._green }]}
                       onPress={ToggleCheck}
                     >
@@ -93,7 +122,7 @@ const MyComponent = ({ navigation }) => {
                         color={Colors._white}
                       />
                       <Text style={styles.textConfirm}>Gọi điện</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity
                       onPress={() => handleChat(item)}
                       style={[styles.btn, { backgroundColor: Colors._blue }]}
@@ -103,7 +132,7 @@ const MyComponent = ({ navigation }) => {
                         size={20}
                         color={Colors._white}
                       />
-                      <Text style={styles.textConfirm}>Nhắm tin</Text>
+                      <Text style={styles.textConfirm}>Nhắn tin</Text>
                     </TouchableOpacity>
                   </View>
                 </View>

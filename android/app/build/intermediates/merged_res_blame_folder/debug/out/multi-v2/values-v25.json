@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.chatapp-mergeDebugResources-32:/values-v25/values-v25.xml",
+            "outputFile": "com.chatapp-mergeDebugResources-44:/values-v25/values-v25.xml",
             "map": [
                 {
-                    "source": "/home/huyonic/.gradle/caches/transforms-4/346f569ba9d365042b456e7e69a1a638/transformed/appcompat-1.6.1/res/values-v25/values-v25.xml",
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-4\\5aadb3469717b3836be5626294f6b85d\\transformed\\appcompat-1.6.1\\res\\values-v25\\values-v25.xml",
                     "from": {
                         "startLines": "2,3,4,6",
                         "startColumns": "4,4,4,4",

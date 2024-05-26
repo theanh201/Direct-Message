@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.chatapp-mergeDebugResources-32:/values-es-rES/values-es-rES.xml",
+            "outputFile": "com.chatapp-mergeDebugResources-44:/values-es-rES/values-es-rES.xml",
             "map": [
                 {
-                    "source": "/home/huyonic/.gradle/caches/transforms-4/441abbc29e7844d504dda1a0ffede014/transformed/jetified-react-android-0.74.1-debug/res/values-es-rES/values-es-rES.xml",
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-4\\cff4b1d2c0f2520f59a0aac653ca6b7e\\transformed\\jetified-react-android-0.74.1-debug\\res\\values-es-rES\\values-es-rES.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

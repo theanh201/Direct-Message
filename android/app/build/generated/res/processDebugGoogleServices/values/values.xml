@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">406702421762</string>
+    <string name="google_api_key" translatable="false">AIzaSyBOfQ5loKeHrDqDssQEEwnho6RXx8d70Do</string>
+    <string name="google_app_id" translatable="false">1:406702421762:android:41629663b5dbd92088341b</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBOfQ5loKeHrDqDssQEEwnho6RXx8d70Do</string>
+    <string name="google_storage_bucket" translatable="false">chat-app-b3da7.appspot.com</string>
+    <string name="project_id" translatable="false">chat-app-b3da7</string>
+</resources>

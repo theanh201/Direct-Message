@@ -21,14 +21,17 @@ import BackgroundSetting from "./src/screens/Settings/setting_bg";
 import SettingInfo from "./src/screens/Settings/setting_info";
 import SettingAccout from "./src/screens/Settings/setting_acc";
 import SettingTheme from "./src/screens/Settings/setting_theme";
+import {ZegoCallInvitationDialog} from "@zegocloud/zego-uikit-prebuilt-call-rn"
+import {ZegoUIKitPrebuiltCallWaitingScreen, ZegoUIKitPrebuiltCallInCallScreen} from "@zegocloud/zego-uikit-prebuilt-call-rn"
 const myStack = createNativeStackNavigator();
 export default function App() {
   return (
     <>
       <StatusBar backgroundColor={Colors._secondary} />
       <NavigationContainer>
+        <ZegoCallInvitationDialog />
         <myStack.Navigator headerMode="none">
-          <myStack.Screen
+          {/* <myStack.Screen
             name="SplashScreen"
             component={SplashScreen}
             options={{ headerShown: false }}
@@ -47,7 +50,7 @@ export default function App() {
             name="SignupScreen"
             component={SignupScreen}
             options={{ headerShown: false }}
-          />
+          /> */}
           <myStack.Screen
             name="HomeScreen"
             component={HomeScreen}
@@ -123,6 +126,18 @@ export default function App() {
               headerTitleAlign: "center",
             }}
           />
+        <myStack.Screen
+            options={{ headerShown: false }}
+            // DO NOT change the name 
+            name="ZegoUIKitPrebuiltCallWaitingScreen"
+            component={ZegoUIKitPrebuiltCallWaitingScreen}
+        />
+        <myStack.Screen
+            options={{ headerShown: false }}
+            // DO NOT change the name
+            name="ZegoUIKitPrebuiltCallInCallScreen"
+            component={ZegoUIKitPrebuiltCallInCallScreen}
+        />
         </myStack.Navigator>
       </NavigationContainer>
     </>
