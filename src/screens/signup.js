@@ -69,7 +69,6 @@ export default function SignupScreen({ navigation }) {
 
   useEffect(() => {
     ValidModel();
-    console.log(sha256(password));
   }, [email, password, confirmPassword]);
 
   return (

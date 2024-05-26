@@ -12,4 +12,5 @@ npm install @react-native-async-storage/async-storage
 npm install --save react-native-image-picker
 npm install react-native-permissions
 npm install react-native-fs
+npm install react-native-linear-gradient
 yarn add lottie-react-native
