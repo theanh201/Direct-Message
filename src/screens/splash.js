@@ -16,7 +16,7 @@ export default function SplashScreen({ navigation }) {
     } else {
       // fetchUserData();
       // fetchUserFriends();
-      navigation.navigate("StartScreen");
+      navigation.navigate("HomeScreen");
     }
   };
   // const SetUpInfo = async()=>{
