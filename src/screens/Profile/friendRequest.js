@@ -102,6 +102,7 @@ export default function FriendRequest({ navigation }) {
                           setRequest(
                             request.filter((i) => i.email !== item.email)
                           );
+                          fetchData();
                         } catch (err) {
                           console.log(err);
                           Alert.alert(err.response.data);
@@ -129,9 +130,10 @@ export default function FriendRequest({ navigation }) {
                           setRequest(
                             request.filter((i) => i.email !== item.email)
                           );
+                          fetchData();
                         } catch (err) {
                           console.log(err);
-                          Alert.alert(err.response.data);
+                          console.log(err.response.data);
                         }
                       }}
                     >
@@ -151,10 +153,6 @@ export default function FriendRequest({ navigation }) {
             style={{ marginTop: 50, width: 150, height: 150 }}
             source={require("../../asset/templates/smile.json")}
             autoPlay
-          />
-          <Image
-            style={{ width: 200, height: 200, borderRadius: 20, marginTop: 50 }}
-            source={require("../../asset/images/design/nofriend.jpg")}
           />
         </View>
       )}

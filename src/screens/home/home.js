@@ -89,32 +89,6 @@ export function HomeScreen({ navigation }) {
         />
 
         <Tab.Screen
-          name="Test"
-          component={Test}
-          options={{
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View style={styles.bottombar_item}>
-                  <Entypo
-                    name="message"
-                    size={20}
-                    color={focused ? Colors._white : Colors._black}
-                  />
-                  <Text
-                    style={[
-                      styles.bottombar_text,
-                      focused && styles.bottombar_focused,
-                    ]}
-                  >
-                    Test
-                  </Text>
-                </View>
-              );
-            },
-          }}
-        />
-
-        <Tab.Screen
           name="Friends"
           component={Friends}
           options={{

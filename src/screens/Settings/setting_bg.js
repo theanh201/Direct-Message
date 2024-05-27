@@ -60,19 +60,22 @@ export default function BackgroundSetting() {
 
   const uploadImage = async () => {
     if (!imageUri) {
-      console.log("No image selected");
+      Alert.alert("Hãy chọn ảnh cần tải lên");
       return;
     }
     const formData = new FormData();
     formData.append("token", TOKEN.GetToken());
-    formData.append("avatar", {
+    formData.append("background", {
       uri: imageUri,
       type: "image/jpg",
       name: "img1.jpg",
     });
     console.log(formData);
     try {
-      const response = await axios.putForm(`${DOMAIN}/update-avatar`, formData);
+      const response = await axios.putForm(
+        `${DOMAIN}/update-background`,
+        formData
+      );
       console.log("Image uploaded successfully: ", response.data);
       Alert.alert("Thay đổi ảnh đại diện thành công");
     } catch (error) {
@@ -82,6 +85,9 @@ export default function BackgroundSetting() {
 
   return (
     <View style={{ alignItems: "center" }}>
+      <Text style={{ color: "#ccc" }}>
+        Bạn sẽ thấy sự thay đổi ở lần đăng nhập tiếp theo
+      </Text>
       <View style={styles.borderImage}>
         {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
       </View>
@@ -142,8 +148,8 @@ const styles = StyleSheet.create({
   borderImage: {
     marginVertical: 30,
     width: 300,
-    height: 300,
-    borderRadius: 500,
+    height: 200,
+    borderRadius: 10,
     borderColor: Colors._blue,
     borderWidth: 3,
     overflow: "hidden",

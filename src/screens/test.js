@@ -73,7 +73,13 @@ export default function Test() {
   // });
   return (
     <View>
-      <Button title="Get Cache" onPress={() => getStringValue("token")} />
+      <Button
+        title="Get Cache"
+        onPress={async () => {
+          const data = await USECACHE.GetData("info");
+          console.log(data);
+        }}
+      />
       <Button title="Get ALL Cache" onPress={() => getAllCacheData()} />
       <Button
         title="Get Multi Cache by Key"

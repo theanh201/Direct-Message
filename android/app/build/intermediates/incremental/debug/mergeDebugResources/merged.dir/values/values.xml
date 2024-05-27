@@ -1372,6 +1372,7 @@
     <item name="fragment_container_view_tag" type="id"/>
     <item name="ghost_view" type="id"/>
     <item name="ghost_view_holder" type="id"/>
+    <item name="glide_custom_view_target_tag" type="id"/>
     <item name="home" type="id"/>
     <item name="invalidate_transform" type="id"/>
     <item name="item_touch_helper_previous_elevation" type="id"/>

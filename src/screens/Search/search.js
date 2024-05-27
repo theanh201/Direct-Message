@@ -20,34 +20,45 @@ import { ValidateEmail, DOMAIN, TOKEN } from "../../config/const";
 import axios from "axios";
 import defaultTemplate from "../../config/config";
 import LottieView from "lottie-react-native";
+import FastImage from "react-native-fast-image";
 export default function SearchScreen({ navigation }) {
   const [searchString, setSearchString] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  let pageNumber = 0;
+  const [pageNumber, setPageNumber] = useState(0);
   const defaultImage = defaultTemplate.avatar;
+
   const item = ({ item }) => (
     <View style={styles.friendContainer}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Image
+        <FastImage
           style={styles.img}
           source={{
             uri: item.Avatar
               ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${item.Avatar}`
               : defaultImage,
+            priority: FastImage.priority.normal,
           }}
         />
         <View style={styles.info}>
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
-            Tên: {item.Name}
+            {item.Name}
           </Text>
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
-            Email: {item.Email}
+            {item.Email}
           </Text>
         </View>
       </View>
-      <TouchableOpacity onPress={() => addFriendRequest(item.Email)}>
+      <TouchableOpacity
+        style={{
+          width: 50,
+          height: 50,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={() => addFriendRequest(item.Email)}
+      >
         <Entypo name="add-user" size={20} color={Colors._blue} />
       </TouchableOpacity>
     </View>
@@ -58,6 +69,7 @@ export default function SearchScreen({ navigation }) {
     }
     return false;
   }
+
   const searchUser = () => {
     setLoading(true);
     setSearchResult([]);
@@ -68,7 +80,7 @@ export default function SearchScreen({ navigation }) {
         .get(`${DOMAIN}/get-by-email/${TOKEN.GetToken()}/${searchString}`)
         .then((emailResult) => {
           setSearchResult(emailResult.data);
-          console.log(searchResult.length);
+          console.log(searchResult);
         })
         .catch((error) => {
           console.log(error);
@@ -82,7 +94,7 @@ export default function SearchScreen({ navigation }) {
         )
         .then((nameResult) => {
           setSearchResult(nameResult.data);
-          console.log(searchResult.length);
+          console.log(nameResult.data);
         })
         .catch((error) => {
           console.log(error);
@@ -91,6 +103,39 @@ export default function SearchScreen({ navigation }) {
     console.log(searchResult);
     setLoading(false);
   };
+  // PAGING
+  const FooterComponent = () => {
+    return (
+      <View style={styles.footer}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            setPageNumber(pageNumber - 1);
+            searchUser();
+          }}
+        >
+          <AntDesign name="caretleft" color={Colors._white} size={20} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn}>
+          <Text
+            style={{ fontSize: 18, color: Colors._white, fontWeight: "bold" }}
+          >
+            {pageNumber + 1}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => {
+            setPageNumber(pageNumber + 1);
+            searchUser();
+          }}
+        >
+          <AntDesign name="caretright" color={Colors._white} size={20} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   const addFriendRequest = async (email) => {
     console.log(email);
     console.log(TOKEN.GetToken());
@@ -115,10 +160,10 @@ export default function SearchScreen({ navigation }) {
       );
       form.append("token", TOKEN.GetToken());
       response = await axios.postForm(`${DOMAIN}/add-friend-request`, form);
-      console.log(response.data);
+
       Alert.alert("Đã gửi lời mời kết bạn");
     } catch (err) {
-      console.error(err.response.data);
+      Alert.alert(`Hãy chờ ${email} xác nhận lời mời kết bạn`);
     }
     setModalVisible(false);
   };
@@ -169,82 +214,6 @@ export default function SearchScreen({ navigation }) {
         </TouchableHighlight>
       </View>
 
-      {/* <Modal
-        style={{ alignItems: "center" }}
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-      >
-        <View
-          style={{ alignItems: "center", justifyContent: "center", flex: 1 }}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              borderWidth: 1,
-              borderRadius: 10,
-              alignContent: "center",
-              width: "90%",
-            }}
-          >
-            <Image
-              style={{ height: "30%", width: "100%", borderRadius: 10 }}
-              source={{
-                uri: `${DOMAIN}/get-background/${TOKEN.GetToken()}`,
-              }}
-            />
-            <View style={{ alignItems: "center", top: -50 }}>
-              <Image
-                style={{
-                  height: 100,
-                  width: 100,
-                  borderColor: "gray",
-                  borderWidth: 2,
-                  borderRadius: 360,
-                }}
-                source={{
-                  uri: `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${avatar}`,
-                }}
-              />
-              <Text style={{ fontSize: 25 }}>{name}</Text>
-              <Text>Email: {email}</Text>
-            </View>
-            <View
-              style={{
-                bottom: 5,
-                paddingHorizontal: 5,
-                position: "absolute",
-                width: "100%",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => addFriendRequest(email)}
-                style={{
-                  backgroundColor: "green",
-                  borderRadius: 5,
-                  alignItems: "center",
-                  marginBottom: 5,
-                }}
-              >
-                <Text style={{ fontSize: 20, padding: 5 }}>AddFriend</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  setModalVisible(false);
-                }}
-                style={{
-                  backgroundColor: "red",
-                  borderRadius: 5,
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ fontSize: 20, padding: 5 }}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
-
       {/* RENDER SEARCH RESULT */}
       {loading ? (
         <ActivityIndicator
@@ -254,10 +223,11 @@ export default function SearchScreen({ navigation }) {
         />
       ) : searchResult.length > 0 ? (
         <FlatList
-          style={{ padding: 15 }}
+          style={{ paddingHorizontal: 15, paddingTop: 15 }}
           data={searchResult}
           renderItem={item}
-          keyExtractor={(item) => item.email}
+          keyExtractor={(item, index) => index}
+          ListFooterComponent={FooterComponent}
         />
       ) : (
         <View style={{ alignItems: "center", marginTop: 150 }}>
@@ -322,5 +292,26 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     maxWidth: 220,
+  },
+  footer: {
+    padding: 15,
+    height: 150,
+    backgroundColor: Colors._white,
+    alignItems: "center",
+    borderRadius: 10,
+    shadowColor: Colors._black,
+    elevation: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+  btn: {
+    width: 50,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    marginHorizontal: 10,
+    backgroundColor: Colors._darkblue,
   },
 });

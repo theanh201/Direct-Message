@@ -1,216 +1,238 @@
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
+  ActivityIndicator,
   StyleSheet,
   ScrollView,
-  ImageBackground,
+  Image,
+  TouchableOpacity,
+  FlatList,
 } from "react-native";
-import React from "react";
-import Colors from "./../../asset/styles/color";
-import Entypo from "react-native-vector-icons/Entypo";
+import axios from "axios";
+import Colors from "../../asset/styles/color";
+import Feather from "react-native-vector-icons/Feather";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import { DOMAIN, TOKEN } from "../../config/const";
 import { SafeAreaView } from "react-native-safe-area-context";
-export default function MessageScreen({ navigation }) {
-  // Dummy data for recent chats
-  const recentChats = [
-    {
-      id: "1",
-      name: "Trường An",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Xác định tạch môn",
-      lastMessageTime: "10:30 AM",
-    },
-    {
-      id: "2",
-      name: "Thế Anh",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Làm App ngu như con lợn",
-      lastMessageTime: "Yesterday",
-    },
-    {
-      id: "3",
-      name: "Nguyễn Văn A",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Không có kỹ năng làm việc nhóm",
-      lastMessageTime: "Yesterday",
-    },
-    {
-      id: "4",
-      name: "Trường An",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Xác định tạch môn",
-      lastMessageTime: "10:30 AM",
-    },
-    {
-      id: "5",
-      name: "Thế Anh",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Làm App ngu như con lợn",
-      lastMessageTime: "Yesterday",
-    },
-    {
-      id: "6",
-      name: "Nguyễn Văn A",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Không có kỹ năng làm việc nhóm",
-      lastMessageTime: "Yesterday",
-    },
-    {
-      id: "7",
-      name: "Trường An",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Xác định tạch môn",
-      lastMessageTime: "10:30 AM",
-    },
-    {
-      id: "8",
-      name: "Thế Anh",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Làm App ngu như con lợn",
-      lastMessageTime: "Yesterday",
-    },
-    {
-      id: "9",
-      name: "Nguyễn Văn A",
-      img: require("../../asset/images/design/user.jpg"),
-      lastMessage: "Không có kỹ năng làm việc nhóm",
-      lastMessageTime: "Yesterday",
-    },
-  ];
-  const onlineList = [
-    { id: 1, name: "Minh", img: require("../../asset/images/design/user.jpg") },
-    { id: 2, name: "Dũng", img: require("../../asset/images/design/user.jpg") },
-    { id: 3, name: "Minh", img: require("../../asset/images/design/user.jpg") },
-    { id: 4, name: "Dũng", img: require("../../asset/images/design/user.jpg") },
-    { id: 5, name: "Minh", img: require("../../asset/images/design/user.jpg") },
-    { id: 6, name: "Dũng", img: require("../../asset/images/design/user.jpg") },
-  ];
-  const ListHeader = () => {
-    return <Text>Đang hoạt động</Text>;
-  };
-  const ListOnline = () => {
-    return (
-      <View style={styles.list_online}>
-        <Text style={styles.text}>Đang hoạt động</Text>
-        <FlatList
-          data={onlineList}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.onl_user}>
-              <Image style={styles.onl_img} source={item.img} />
-              <View style={styles.onl_icon}>
-                <Entypo name="dot-single" color="green" size={40} />
-              </View>
+import defaultTemplate from "../../config/config";
+import LottieView from "lottie-react-native";
+import CheckModal from "../../components/check";
+import ProcessString from "../../config/processstring";
+import Button from "react-native-really-awesome-button";
+import FastImage from "react-native-fast-image";
+const MyComponent = ({ navigation }) => {
+  const [friendList, setFriendList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [visibleCheck, setVisableCheck] = useState(false);
+  const [topMessage, setTopMessage] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const websocket = new WebSocket("ws://192.168.1.101:8080/ws");
 
-              <Text style={styles.text}>{item.name}</Text>
-            </View>
-          )}
-        />
-      </View>
-    );
+  const ToggleCheck = () => {
+    setVisableCheck(!visibleCheck);
+  };
+
+  // const PutNewMessage = () =>{
+  //   if (newMessage){
+  //     friendList.
+  //   }
+  // }
+  useEffect(() => {
+    fetchData();
+
+    websocket.onopen = () => {
+      console.log("WebSocket connection opened");
+      onl_mess = {
+        case: 0,
+        token: TOKEN.GetToken(),
+      };
+      websocket.send(JSON.stringify(onl_mess));
+      console.log("Sent online notification to server");
+    };
+
+    websocket.onmessage = (event) => {
+      jsonData = ProcessString(event.data);
+      console.log(jsonData);
+      setNewMessage(jsonData.Content);
+      // setListMessages((prevMessages) => [...prevMessages, jsonData.Content]);
+    };
+
+    websocket.onerror = (error) => {
+      console.log("WebSocket error:", error);
+    };
+
+    websocket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    // getMessageByEmail();
+    // Cleanup on unmount
+    return () => {
+      websocket.close();
+    };
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `${DOMAIN}/get-friend-list/${TOKEN.GetToken()}`
+      );
+      setFriendList(response.data);
+    } catch (error) {
+      console.error(error.response.data);
+    }
+    setLoading(false);
+  };
+  const handleChat = (item) => {
+    navigation.navigate("ChatScreen", { item });
   };
   return (
-    <ImageBackground
-      source={require("../../asset/images/design/bg_main.jpeg")}
-      style={{ padding: 15, paddingBottom: 60 }}
-    >
-      <View>
-        <FlatList
-          data={recentChats}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item.id}
-          ListHeaderComponent={ListOnline}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.chatItem}
-              onPress={() => navigation.navigate("ChatScreen")}
-            >
-              <Image
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderColor: Colors._blue,
-                  borderWidth: 0.5,
-                  borderRadius: 100,
-                }}
-                source={item.img}
-              />
-              <View style={{ marginLeft: 20, width: "100%", padding: 5 }}>
-                <Text style={styles.contactName}>{item.name}</Text>
-                <Text style={styles.lastMessage}>{item.lastMessage}</Text>
-                <Text style={styles.lastMessageTime}>
-                  {item.lastMessageTime}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )}
+    <SafeAreaView style={styles.container}>
+      {loading ? (
+        <LottieView
+          style={{ width: 200, height: 200 }}
+          source={require("../../asset/templates/loading3.json")}
+          autoPlay
+          loop
         />
-      </View>
-    </ImageBackground>
+      ) : friendList ? (
+        <View>
+          <View
+            style={{
+              padding: 15,
+              backgroundColor: Colors._darkblue,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            }}
+          >
+            <Text style={{ color: Colors._white }}>Các cuộc trò chuyện</Text>
+          </View>
+          <FlatList
+            data={friendList}
+            keyExtractor={(item) => item.Info.Email}
+            style={{}}
+            renderItem={({ item }) => (
+              <View style={styles.friend}>
+                <FastImage
+                  style={styles.img}
+                  source={{
+                    uri: item.Info.Avatar
+                      ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${
+                          item.Info.Avatar
+                        }`
+                      : defaultTemplate.avatar,
+                    priority: FastImage.priority.high,
+                  }}
+                />
+                <View style={styles.info}>
+                  <Text style={styles.text}>{item.Info.Name}</Text>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginTop: 10,
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => handleChat(item)}
+                      style={[styles.btn, { backgroundColor: Colors._blue }]}
+                    >
+                      <Feather
+                        name="message-square"
+                        size={20}
+                        color={Colors._white}
+                      />
+                      <Text style={styles.textConfirm}>
+                        Tham gia cuộc trò chuyện
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
+          />
+          <CheckModal
+            tittle="Thành công"
+            message="Gọi thành công"
+            visable={visibleCheck}
+            onClose={ToggleCheck}
+          />
+          <View style={{ height: 50 }}></View>
+        </View>
+      ) : (
+        <Text>Hiện không có bạn bè</Text>
+      )}
+    </SafeAreaView>
   );
-}
+};
+
 const styles = StyleSheet.create({
-  list_online: {
-    backgroundColor: Colors._white,
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    marginBottom: 5,
+  scrollViewContainer: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  text: {
-    color: Colors._black,
-    fontSize: 12,
-    fontWeight: "bold",
+  container: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    padding: 15,
   },
-  chatItem: {
+  friend: {
+    width: "100%",
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 5,
     backgroundColor: Colors._white,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginVertical: 5,
-    borderRadius: 10,
-    shadowColor: Colors._white,
-    elevation: 7,
+    shadowColor: Colors._black,
+    elevation: 2,
   },
-  contactName: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: Colors._black,
-  },
-  lastMessage: {
-    fontSize: 14,
-    color: Colors._black,
-    fontWeight: "500",
-    marginTop: 5,
-  },
-  lastMessageTime: {
-    fontSize: 8,
-    color: "#666",
-    marginTop: 10,
-  },
-  onl_user: {
-    padding: 5,
-    width: 70,
-    height: 70,
-    position: "relative",
-    alignItems: "center",
-  },
-  onl_img: {
-    width: 45,
-    height: 45,
-    borderRadius: 100,
-  },
-  onl_icon: {
-    position: "absolute",
-    top: -10,
-    right: -10,
+  btn: {
+    width: 240,
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
+    marginHorizontal: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    shadowColor: Colors._black,
+    elevation: 5,
+  },
+  img: {
+    width: 60,
+    height: 60,
+    borderRadius: 60,
+    borderColor: Colors._dash,
+    borderWidth: 1,
+  },
+  info: {
+    width: "70%",
+    alignItems: "center",
+    marginLeft: 10,
+  },
+  name: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: Colors._secondary,
+  },
+  text: {
+    fontSize: 14,
+    color: Colors._black,
+    fontWeight: "bold",
+  },
+  textConfirm: {
+    fontSize: 12,
+    color: Colors._white,
+    fontWeight: "bold",
+    marginLeft: 5,
   },
 });
+
+export default MyComponent;

@@ -1,26 +1,34 @@
 import { View, Text, Image, StyleSheet, ImageBackground } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "../asset/styles/color";
-import { TOKEN, DateIsAfterCurrent } from "../config/const";
+import { TOKEN, DateIsAfterCurrent, DOMAIN } from "../config/const";
 import LottieView from "lottie-react-native";
+
 export default function SplashScreen({ navigation }) {
   const SetUpTOKEN = async () => {
     await TOKEN.TokenReadFromStorage();
     let token = TOKEN.GetToken();
     let timeout = TOKEN.GetTimeout();
-    console.log("Token from storage:", token);
-    console.log("Storage's token timeout:", timeout);
+    // console.log("Token from storage:", token);
+    // console.log("Storage's token timeout:", timeout);
     if (token === null || timeout === null || !DateIsAfterCurrent(timeout)) {
       navigation.navigate("StartScreen");
     } else {
+      // fetchUserData();
+      // fetchUserFriends();
       navigation.navigate("StartScreen");
     }
   };
+  // const SetUpInfo = async()=>{
+  //   const userInfo = await USECACHE.GetData("info")
+
+  // }
+  // }
+
   useEffect(() => {
     const timer = setTimeout(() => {
       SetUpTOKEN();
-      navigation.navigate("StartScreen");
-    }, 4000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, [navigation]);
 

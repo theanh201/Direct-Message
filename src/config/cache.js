@@ -21,7 +21,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 class UseCache {
   async SetData(key, value) {
     try {
-      await AsyncStorage.setItem(key, value);
+      jsonData = JSON.stringify(value);
+      await AsyncStorage.setItem(key, jsonData);
       console.log("done");
     } catch (e) {
       console.log(e);
@@ -29,11 +30,32 @@ class UseCache {
   }
   async GetData(key) {
     try {
-      this.data = await AsyncStorage.getItem(key);
-      return this.data;
+      const jsonData = await AsyncStorage.getItem(key);
+      // console.log(JSON.parse(jsonData));
+      return jsonData != null ? JSON.parse(jsonData) : null;
     } catch (e) {
       console.log(e);
     }
+  }
+  async MergeData(key, value) {}
+  async GetAllData() {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const values = await AsyncStorage.multiGet(keys);
+      const data = values.reduce((acc, [key, value]) => {
+        acc[key] = value;
+        console.log(data);
+        return acc;
+      }, {});
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async ClearALlData() {
+    await AsyncStorage.ClearALlData();
+    console.log("Clear cache before success!");
   }
 }
 const USECACHE = new UseCache();
