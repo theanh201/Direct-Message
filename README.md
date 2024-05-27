@@ -15,4 +15,4 @@
 start setup.exe
 ```
 
-![Giao diện ứng dụng Chat](src/asset/ui/giaodien1.jpeg)
+<img src="src/asset/ui/giaodien1.jpeg" alt="Giao diện ứng dụng chat" width="200">
