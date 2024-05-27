@@ -1,11 +1,11 @@
-#Sun May 26 22:05:42 ICT 2024
-base.0=D\:\\chatApp\\Direct-Message\\android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=D\:\\chatApp\\Direct-Message\\android\\app\\build\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.2=D\:\\chatApp\\Direct-Message\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.3=D\:\\chatApp\\Direct-Message\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex
-base.4=D\:\\chatApp\\Direct-Message\\android\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\5\\classes.dex
-base.5=D\:\\chatApp\\Direct-Message\\android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-base.6=D\:\\chatApp\\Direct-Message\\android\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes3.dex
+#Mon May 27 21:42:58 ICT 2024
+base.0=/home/admin/Documents/Work/Git/Direct-Message/android/app/build/intermediates/dex/debug/mergeExtDexDebug/classes.dex
+base.1=/home/admin/Documents/Work/Git/Direct-Message/android/app/build/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
+base.2=/home/admin/Documents/Work/Git/Direct-Message/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
+base.3=/home/admin/Documents/Work/Git/Direct-Message/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/14/classes.dex
+base.4=/home/admin/Documents/Work/Git/Direct-Message/android/app/build/intermediates/dex/debug/mergeProjectDexDebug/5/classes.dex
+base.5=/home/admin/Documents/Work/Git/Direct-Message/android/app/build/intermediates/dex/debug/mergeExtDexDebug/classes2.dex
+base.6=/home/admin/Documents/Work/Git/Direct-Message/android/app/build/intermediates/dex/debug/mergeExtDexDebug/classes3.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex

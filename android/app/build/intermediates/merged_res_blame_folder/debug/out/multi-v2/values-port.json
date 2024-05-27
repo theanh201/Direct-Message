@@ -4,7 +4,7 @@
             "outputFile": "com.chatapp-mergeDebugResources-44:/values-port/values-port.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-4\\5aadb3469717b3836be5626294f6b85d\\transformed\\appcompat-1.6.1\\res\\values-port\\values-port.xml",
+                    "source": "/home/admin/.gradle/caches/transforms-4/5aadb3469717b3836be5626294f6b85d/transformed/appcompat-1.6.1/res/values-port/values-port.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

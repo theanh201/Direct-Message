@@ -2539,10 +2539,10 @@
     react-native-screens "^3.18.2"
     react-native-sound "^0.11.2"
 
-"@zegocloud/zego-uikit-rn@^2.9.0", "@zegocloud/zego-uikit-rn@>=2.3.1":
-  version "2.9.0"
-  resolved "https://registry.npmjs.org/@zegocloud/zego-uikit-rn/-/zego-uikit-rn-2.9.0.tgz"
-  integrity sha512-fFGk6vRVciXGGod0dliDQ3iFmDpDsFgjJpWyF/TXLovtIvV25VveB4gVR7bgVXCq9aulIaibeKoZbfEj8L1L0Q==
+"@zegocloud/zego-uikit-rn@^2.9.1", "@zegocloud/zego-uikit-rn@>=2.3.1":
+  version "2.9.1"
+  resolved "https://registry.npmjs.org/@zegocloud/zego-uikit-rn/-/zego-uikit-rn-2.9.1.tgz"
+  integrity sha512-nR2uiLtyk3HfA6CEpotS0i2H0zEe5I+A6Ed55V/JYqwi0TtZDT5CuK+xKUBr0NGFliRFb9nUYziXOTLBOq1s0Q==
   dependencies:
     react-delegate-component "^1.0.0"
     zego-express-engine-reactnative "3.14.5"
@@ -8194,12 +8194,7 @@ zego-zim-react-native@^2.12.1, zego-zim-react-native@2.12.1:
   resolved "https://registry.npmjs.org/zego-zim-react-native/-/zego-zim-react-native-2.12.1.tgz"
   integrity sha512-992pMz47Zg3QYii2vcB+JkQBYmJ0qV6uLH2gHPLpN+FBTr5AEBW6EbLju2BR0nf+zdtck7BrS1zxzralR1pvGQ==
 
-zego-zpns-react-native@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.npmjs.org/zego-zpns-react-native/-/zego-zpns-react-native-2.6.1.tgz"
-  integrity sha512-TINhoJb21+kjpzz327i3/bp5cmptspXWL5BVPnw7YgY2j2JN9d0veiegJRckYDF0avYdF2bJUReV5rqpF9YVNw==
-
-zego-zpns-react-native@2.5.0-alpha:
+zego-zpns-react-native@^2.5.0-alpha, zego-zpns-react-native@2.5.0-alpha:
   version "2.5.0-alpha"
   resolved "https://registry.npmjs.org/zego-zpns-react-native/-/zego-zpns-react-native-2.5.0-alpha.tgz"
   integrity sha512-x4nRNZYrk7oP7pe0Y0DVT1h8Y9JeDldjA0ma8tAoQH8i6LGvhtnG+Ke6cY5azOrXWVMM4j580Gz9/8XXAOnO3g==

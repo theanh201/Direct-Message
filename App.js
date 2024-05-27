@@ -31,7 +31,7 @@ export default function App() {
       <NavigationContainer>
         <ZegoCallInvitationDialog />
         <myStack.Navigator headerMode="none">
-          {/* <myStack.Screen
+          <myStack.Screen
             name="SplashScreen"
             component={SplashScreen}
             options={{ headerShown: false }}
@@ -50,7 +50,7 @@ export default function App() {
             name="SignupScreen"
             component={SignupScreen}
             options={{ headerShown: false }}
-          /> */}
+          />
           <myStack.Screen
             name="HomeScreen"
             component={HomeScreen}

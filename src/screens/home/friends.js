@@ -90,7 +90,7 @@ const MyComponent = ({ navigation }) => {
                     }}
                   >
                     <ZegoSendCallInvitationButton
-                    invitees={[{userID: item.Info.Name, userName: item.Info.Name}]}
+                    invitees={[{userID: item.Info.Email, userName: item.Info.Email}]}
                     isVideoCall={true}
                     resourceID={"chatApp"}
                     />
