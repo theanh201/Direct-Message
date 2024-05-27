@@ -11,10 +11,9 @@
 
 Đối với hệ điều hành Windows:
 
-</p>
 ```
 start setup.exe
 ```
 
 <h2>Giao diện của ứng dụng Chat</h2>
-<img style="width:200; height:700" href="src/asset/ui/giaodien1.jpeg"/>
+![Giao diện ứng dụng Chat](src/asset/ui/giaodien1.jpeg)
