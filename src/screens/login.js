@@ -65,17 +65,6 @@ export default function LoginScreen({ navigation }) {
       })
       .catch((e) => console.log(e));
   };
-  // const fetchUserMessage = () => {
-  //   axios
-  //     .get(`${DOMAIN}/get-all-message/${TOKEN.GetToken()}`)
-  //     .then((response) => {
-  //       listMessages = response.data
-  //       listMessages.map((msg)=>{
-  //         USECACHE.
-  //       })
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
   const handleLogin = async () => {
     // Basic email and password validation
     // If form valid => handleLogin

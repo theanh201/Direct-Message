@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.chatapp-mergeDebugResources-32:/values-en-rGB/values-en-rGB.xml",
+            "outputFile": "com.chatapp-mergeDebugResources-33:/values-en-rGB/values-en-rGB.xml",
             "map": [
                 {
                     "source": "/home/huyonic/.gradle/caches/transforms-4/6621c239d1e00abea0752787fff99403/transformed/core-1.9.0/res/values-en-rGB/values-en-rGB.xml",

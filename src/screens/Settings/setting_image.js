@@ -82,6 +82,9 @@ const ImageSetting = () => {
 
   return (
     <View style={{ alignItems: "center" }}>
+      <Text style={{ color: "#ccc" }}>
+        Bạn sẽ thấy sự thay đổi ở lần đăng nhập tiếp theo
+      </Text>
       <View style={styles.borderImage}>
         {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
       </View>

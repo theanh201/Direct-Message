@@ -1,18 +1,44 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import Colors from "../../asset/styles/color";
 import SwitchUser from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
 import PersonalScreen from "../Profile/personal";
 import AwsomeAleart from "../../components/awsome_aleart";
+import { USECACHE } from "../../config/cache";
+import { DOMAIN, TOKEN } from "../../config/const";
+import FastImage from "react-native-fast-image";
+import defaultTemplate from "../../config/config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function UserScreen({ navigation }) {
   const [modalVisable, setModalVisable] = useState(false);
+  const [myInfo, setMyInfo] = useState({});
+  const fetchInfo = async () => {
+    info = await USECACHE.GetData("info");
+    setMyInfo(info);
+  };
+
+  useEffect(() => {
+    fetchInfo();
+  }, []);
   const onToggleAleart = () => {
     setModalVisable(!modalVisable);
   };
-  const onConfirm = () => {
-    navigation.replace("StartScreen");
+  const onConfirm = async () => {
+    // try {
+    //   await AsyncStorage.clear();
+    // } catch (e) {
+    //   // clear error
+    // }
+    navigation.replace("LoginScreen");
   };
   return (
     <View style={{ alignItems: "center" }}>
@@ -33,12 +59,19 @@ export default function UserScreen({ navigation }) {
           style={styles.profile}
           onPress={() => navigation.navigate("PersonalScreen")}
         >
-          <Image
-            style={{ width: 50, height: 50, borderRadius: 20 }}
-            source={require("../../asset/images/design/avt.jpg")}
-          />
+          <View>
+            <FastImage
+              style={{ width: 50, height: 50, borderRadius: 50 }}
+              source={{
+                uri: myInfo
+                  ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${myInfo.Avatar}`
+                  : defaultTemplate.avatar,
+                priority: FastImage.priority.high,
+              }}
+            />
+          </View>
           <View style={{ marginHorizontal: 10 }}>
-            <Text style={styles.text}>Đào Đức Huy</Text>
+            <Text style={styles.text}>{myInfo.Name}</Text>
             <Text style={styles.text}>Xem trang cá nhân</Text>
           </View>
         </TouchableOpacity>

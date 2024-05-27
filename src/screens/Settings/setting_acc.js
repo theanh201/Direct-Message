@@ -7,8 +7,9 @@ import {
   TouchableHighlight,
   TextInput,
   ScrollView,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "../../asset/styles/color";
 import Entypo from "react-native-vector-icons/Entypo";
 import defaultTemplate from "../../config/config";
@@ -17,6 +18,7 @@ import { DOMAIN, TOKEN } from "../../config/const";
 import axios from "axios";
 import AwsomeAleart from "../../components/awsome_aleart";
 import CheckModal from "../../components/check";
+import { USECACHE } from "../../config/cache";
 export default function SettingAccout({ navigation }) {
   const [visableChangePassword, setVissableChangePassword] = useState(false);
   const [visableChangeEmail, setVissableChangeEmail] = useState(false);
@@ -29,7 +31,15 @@ export default function SettingAccout({ navigation }) {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [delPassword, setDelPassword] = useState("");
   const [delEmail, setDelEmail] = useState("");
+  const [myInfo, setMyInfo] = useState({});
 
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+  const fetchInfo = async () => {
+    info = await USECACHE.GetData("info");
+    setMyInfo(info);
+  };
   // Alert
   const [visableAlertChangeName, setVisableAlertChangeName] = useState(false);
   const [visableAlertChangePassword, setVisableAlertChangePassword] =
@@ -61,7 +71,7 @@ export default function SettingAccout({ navigation }) {
         setVissableChangeName(false);
         ToggleCheck();
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => Alert.alert(error.response.data));
   };
   const handleChangePassword = async () => {
     let formData = new FormData();
@@ -75,7 +85,7 @@ export default function SettingAccout({ navigation }) {
         setVissableChangePassword(false);
         ToggleCheck();
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => Alert.alert(error.response.data));
   };
 
   const handleChangeEmail = () => {
@@ -90,7 +100,7 @@ export default function SettingAccout({ navigation }) {
         setVissableChangeEmail(false);
         ToggleCheck();
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => Alert.alert(error.response.data));
   };
 
   const handleDeleteAccout = async () => {
@@ -104,24 +114,22 @@ export default function SettingAccout({ navigation }) {
         setVisseDelAcc(false);
         ToggleCheck();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => Alert.alert(error.response.data));
   };
   return (
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
       style={{ paddingHorizontal: 15, paddingBottom: 70 }}
     >
-      <View>
+      <View style={{ paddingTop: 20 }}>
         <Text style={styles.title}>Tài khoản</Text>
         <TouchableOpacity>
           <View style={styles.box}>
-            <Image
-              style={{ width: 50, height: 50 }}
-              source={{ uri: defaultTemplate.avatar }}
-            />
-            <View>
-              <Text style={styles.text}>Thông tin cá nhân</Text>
-              <Text style={styles.text}>Đào Đức Huy</Text>
+            <Entypo name="user" color={Colors._black} size={30} />
+
+            <View style={{ marginLeft: 10 }}>
+              <Text style={styles.text}>Tên người dùng</Text>
+              <Text style={styles.text}>{myInfo.Name}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -131,7 +139,7 @@ export default function SettingAccout({ navigation }) {
 
           <View style={{ marginLeft: 10 }}>
             <Text style={styles.text}>Địa chỉ Email</Text>
-            <Text style={styles.text}>huymobile5979@gmail.com</Text>
+            <Text style={styles.text}>{myInfo.Email}</Text>
           </View>
         </TouchableOpacity>
         {/* Change UserName */}
@@ -181,7 +189,7 @@ export default function SettingAccout({ navigation }) {
         />
       </View>
 
-      <View>
+      <View style={{ paddingTop: 20 }}>
         <Text style={styles.title}>Bảo mật</Text>
         {/* Change Password */}
         <TouchableHighlight

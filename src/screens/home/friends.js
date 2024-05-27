@@ -19,6 +19,7 @@ import defaultTemplate from "../../config/config";
 import LottieView from "lottie-react-native";
 import CheckModal from "../../components/check";
 import Button from "react-native-really-awesome-button";
+import FastImage from "react-native-fast-image";
 const MyComponent = ({ navigation }) => {
   const [friendList, setFriendList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +63,7 @@ const MyComponent = ({ navigation }) => {
             style={{}}
             renderItem={({ item }) => (
               <View style={styles.friend}>
-                <Image
+                <FastImage
                   style={styles.img}
                   source={{
                     uri: item.Info.Avatar
@@ -70,6 +71,7 @@ const MyComponent = ({ navigation }) => {
                           item.Info.Avatar
                         }`
                       : defaultTemplate.avatar,
+                    priority: FastImage.priority.normal,
                   }}
                 />
                 <View style={styles.info}>
@@ -116,9 +118,10 @@ const MyComponent = ({ navigation }) => {
             visable={visibleCheck}
             onClose={ToggleCheck}
           />
+          <View style={{ height: 50 }}></View>
         </View>
       ) : (
-        <Text>Hiện không có bạn bè</Text>
+        <Text style={styles.text}>Hiện không có bạn bè</Text>
       )}
     </SafeAreaView>
   );

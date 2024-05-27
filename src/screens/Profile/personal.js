@@ -17,38 +17,21 @@ import { launchCamera } from "react-native-image-picker";
 import axios from "axios";
 import { TOKEN, DOMAIN } from "../../config/const";
 import defaultTemplate from "../../config/config";
-
+import FastImage from "react-native-fast-image";
+import { USECACHE } from "../../config/cache";
 export default function PersonalScreen({ navigation }) {
   const [expanded, setExpanded] = useState(false);
   const [numLines, setNumLines] = useState(0);
-  const [info, setInfo] = useState({});
-  const getSefInfo = () => {
-    axios
-      .get(`${DOMAIN}/get-self-info/${TOKEN.GetToken()}`)
-      .then((response) => {
-        console.log(response.data);
-        setInfo(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+  const [myInfo, setMyInfo] = useState({});
+  const fetchInfo = async () => {
+    info = await USECACHE.GetData("info");
+    setMyInfo(info);
   };
   useEffect(() => {
     console.log("Token for acc: " + TOKEN.GetToken());
-    getSefInfo();
-    getAvatar();
+    fetchInfo();
   }, []);
 
-  const getAvatar = () => {
-    axios
-      .get(`${DOMAIN}/get-avatar/${TOKEN}/${info.Avatar}`)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log(err.response.data);
-      });
-  };
   const toggleExpand = () => {
     setExpanded(!expanded);
   };
@@ -99,7 +82,12 @@ export default function PersonalScreen({ navigation }) {
     <>
       <ImageBackground
         source={{
-          uri: info.Background ? info.Background : defaultTemplate.background,
+          uri: myInfo.Background
+            ? `${DOMAIN}/get-background/${TOKEN.GetToken()}/${
+                myInfo.Background
+              }`
+            : defaultTemplate.background,
+          priority: FastImage.priority.high,
         }}
         style={styles.personal_bg}
       >
@@ -107,9 +95,12 @@ export default function PersonalScreen({ navigation }) {
           style={styles.personal_update_avatar}
           onPress={handleCameraLaunch}
         >
-          <Image
+          <FastImage
             source={{
-              uri: `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${info.Avatar}`,
+              uri: myInfo.Avatar
+                ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${myInfo.Avatar}`
+                : defaultTemplate.avatar,
+              priority: FastImage.priority.high,
             }}
             style={styles.personal_avatar}
           />
@@ -148,7 +139,7 @@ export default function PersonalScreen({ navigation }) {
           alignItems: "center",
         }}
       >
-        <Text style={styles.text}>{info.Name}</Text>
+        <Text style={styles.text}>{myInfo.Name}</Text>
         <TouchableOpacity
           style={{
             justifyContent: "space-between",

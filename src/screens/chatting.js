@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { DOMAIN, TOKEN } from "../config/const";
 import ProcessString from "../config/processstring";
@@ -21,6 +22,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import LinearGradient from "react-native-linear-gradient";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MessageProps from "../components/messageprops";
+import LottieView from "lottie-react-native";
 
 const ChatScreen = ({ route, navigation }) => {
   const friend = route.params;
@@ -30,11 +32,14 @@ const ChatScreen = ({ route, navigation }) => {
   const [listTimes, setListTimes] = useState([]);
   const [message, setMessage] = useState("");
   const websocket = new WebSocket("ws://192.168.1.101:8080/ws");
-
+  const [loading, setLoading] = useState(true);
   const [textWidths, setTextWidths] = useState({});
   const [visableProps, setVisableProps] = useState(false);
   const [content, setContent] = useState("");
-  const [layout, setLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });
+  const flatListRef = useRef(null);
+  const scrollToEnd = () => {
+    flatListRef.current?.scrollToEnd({ animated: true });
+  };
   useEffect(() => {
     // Initialize WebSocket connection
     websocket.onopen = () => {
@@ -50,11 +55,16 @@ const ChatScreen = ({ route, navigation }) => {
     websocket.onmessage = (event) => {
       jsonData = ProcessString(event.data);
       console.log(jsonData);
-      setListMessages((prevMessages) => [...prevMessages, jsonData.Content]);
+      setListMessages((prevMessages) => [
+        ...prevMessages,
+        jsonData.SenderEmail == friendEmail
+          ? jsonData.Content
+          : "^" + jsonData.Content,
+      ]);
     };
 
     websocket.onerror = (error) => {
-      console.error("WebSocket error:", error);
+      console.log("WebSocket error:", error);
     };
 
     websocket.onclose = () => {
@@ -75,6 +85,7 @@ const ChatScreen = ({ route, navigation }) => {
         }`
       )
       .then((response) => {
+        console.log(response.data);
         response.data.map((msg) => {
           setListMessages((preMessage) => [
             ...preMessage,
@@ -85,18 +96,16 @@ const ChatScreen = ({ route, navigation }) => {
             { time: msg.Since, content: msg.Content },
           ]);
         });
+        setLoading(false);
       })
-      .catch((error) => console.log(error));
-  };
-  const getAllMessage = () => {
-    axios
-      .get(`${DOMAIN}/get-all-message/${TOKEN.GetToken()}`)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   const sendMessage = () => {
-    if (websocket) {
+    if (websocket && message) {
       data = {
         case: 1,
         token: TOKEN.GetToken(),
@@ -104,9 +113,7 @@ const ChatScreen = ({ route, navigation }) => {
         email: friend.item.Info.Email,
       };
       websocket.send(JSON.stringify(data));
-      const myMessage = "^" + data.content;
-      setListMessages((preMessage) => [...preMessage, myMessage]);
-      console.log(listMessages);
+
       setMessage("");
     }
   };
@@ -126,10 +133,6 @@ const ChatScreen = ({ route, navigation }) => {
   const LongPressToggle = (item) => {
     setContent(item);
     setVisableProps(!visableProps);
-  };
-  const handleLayout = (event) => {
-    const { x, y, width, height } = event.nativeEvent.layout;
-    setLayout({ x, y, width, height });
   };
 
   return (
@@ -154,73 +157,85 @@ const ChatScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          style={styles.chat}
-          data={listMessages}
-          renderItem={({ item }) =>
-            item !== null ? (
-              <TouchableHighlight
-                underlayColor="transparent"
-                onLongPress={() => LongPressToggle(item)}
-                style={styles.boxchat}
-                onLayout={handleLayout}
-              >
-                <LinearGradient
-                  style={[
-                    styles.basemessage,
-
-                    item
-                      ? item.indexOf("^") == 0
-                        ? styles.yourmessage
-                        : styles.friendmessage
-                      : styles.nullmessage,
-                  ]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  colors={
-                    item.indexOf("^") == 0
-                      ? [Colors._blue, Colors._purple]
-                      : [Colors._darkblue, Colors._skyblue]
-                  }
+      {loading ? (
+        <ActivityIndicator
+          style={{ marginTop: 100 }}
+          size="large"
+          color={Colors._blue}
+          // source={require("../asset/templates/loading.json")}
+        />
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            ref={flatListRef}
+            style={styles.chat}
+            data={listMessages}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) =>
+              item !== null ? (
+                <TouchableHighlight
+                  underlayColor="transparent"
+                  onLongPress={() => LongPressToggle(item)}
+                  style={styles.boxchat}
                 >
-                  <Text style={styles.text}>
-                    {item ? item.replace("^", "") : ""}
-                  </Text>
-                </LinearGradient>
-              </TouchableHighlight>
-            ) : (
-              <></>
-            )
-          }
-          keyExtractor={(item, index) => index.toString()}
-        />
-        <View style={styles.inputContainer}>
-          <TouchableOpacity>
-            <Entypo name="documents" color={Colors._black} size={30} />
-          </TouchableOpacity>
-          <TextInput
-            style={styles.input}
-            value={message}
-            onChangeText={setMessage}
-            placeholder="Soạn tin nhắn"
-            placeholderTextColor={Colors._black}
-          />
+                  <LinearGradient
+                    style={[
+                      styles.basemessage,
 
-          <TouchableHighlight
-            style={styles.btn_send}
-            underlayColor={Colors._green}
-            onPress={sendMessage}
-          >
-            <Entypo name="paper-plane" size={30} color={Colors._purple} />
-          </TouchableHighlight>
-        </View>
-        <MessageProps
-          visible={visableProps}
-          content={content}
-          onClose={LongPressToggle}
-        />
-      </SafeAreaView>
+                      item
+                        ? item.indexOf("^") == 0
+                          ? styles.yourmessage
+                          : styles.friendmessage
+                        : styles.nullmessage,
+                    ]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    colors={
+                      item.indexOf("^") == 0
+                        ? [Colors._blue, Colors._purple]
+                        : [Colors._darkblue, Colors._skyblue]
+                    }
+                  >
+                    <Text style={styles.text}>
+                      {item ? item.replace("^", "") : ""}
+                    </Text>
+                  </LinearGradient>
+                </TouchableHighlight>
+              ) : (
+                <></>
+              )
+            }
+          />
+          <View style={styles.inputContainer}>
+            <TouchableOpacity>
+              <Entypo name="documents" color={Colors._black} size={30} />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.input}
+              value={message}
+              onChangeText={setMessage}
+              placeholder="Soạn tin nhắn"
+              placeholderTextColor={Colors._black}
+            />
+
+            <TouchableHighlight
+              style={styles.btn_send}
+              underlayColor={Colors._green}
+              onPress={() => {
+                sendMessage();
+                scrollToEnd();
+              }}
+            >
+              <Entypo name="paper-plane" size={30} color={Colors._purple} />
+            </TouchableHighlight>
+          </View>
+          <MessageProps
+            visible={visableProps}
+            content={content}
+            onClose={LongPressToggle}
+          />
+        </SafeAreaView>
+      )}
     </ImageBackground>
   );
 };

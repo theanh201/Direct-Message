@@ -19,6 +19,8 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 // lottie-react-native
 import com.airbnb.android.react.lottie.LottiePackage;
+// react-native-fast-image
+import com.dylanvann.fastimage.FastImageViewPackage;
 // react-native-fs
 import com.rnfs.RNFSPackage;
 // react-native-gesture-handler
@@ -88,6 +90,7 @@ public class PackageList {
       new AsyncStoragePackage(),
       new RNCMaskedViewPackage(),
       new LottiePackage(),
+      new FastImageViewPackage(),
       new RNFSPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
