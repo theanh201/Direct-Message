@@ -19,13 +19,14 @@ import defaultTemplate from "../../config/config";
 import LottieView from "lottie-react-native";
 import CheckModal from "../../components/check";
 import Button from "react-native-really-awesome-button";
-import {ZegoSendCallInvitationButton} from "@zegocloud/zego-uikit-prebuilt-call-rn"
+import * as ZIM from 'zego-zim-react-native'; import * as ZPNs from 'zego-zpns-react-native';
+import ZegoUIKitPrebuiltCallService, { ZegoCallInvitationDialog, ZegoUIKitPrebuiltCallWaitingScreen, ZegoUIKitPrebuiltCallInCallScreen, ZegoSendCallInvitationButton, } from '@zegocloud/zego-uikit-prebuilt-call-rn';
 const MyComponent = ({ navigation }) => {
   const [friendList, setFriendList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleCheck, setVisableCheck] = useState(false);
-  const userID = 'defaut';
-  const userName = 'defaut';
+  const userID = 'default';
+  const userName = 'default';
 
   const ToggleCheck = () => {
     setVisableCheck(!visibleCheck);
@@ -51,25 +52,6 @@ const MyComponent = ({ navigation }) => {
     navigation.navigate("ChatScreen", { item });
   };
 
-  const initService = () => {
-    ZegoUIKitPrebuiltCallService.init(
-      2105949447,
-      "1da962453e140c11829e6b93d19172832038aef94b1324f1357a7066111790c3",
-      userID,
-      userName,
-      [ZIM, ZPNs],
-      {
-        ringtoneConfig: {
-          incomingCallFileName: 'zego_incoming.mp3',
-          outgoingCallFileName: 'zego_outgoing.mp3',
-        },
-        androidNotificationConfig: {
-          channelID: "ZegoUIKit",
-          channelName: "ZegoUIKit",
-        },
-      });
-  }
-  initService();
   return (
     <SafeAreaView style={styles.container}>
       {loading ? (

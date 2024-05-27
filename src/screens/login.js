@@ -15,7 +15,10 @@ import { sha256 } from "react-native-sha256";
 import axios from "axios";
 import Colors from "../asset/styles/color";
 import Entypo from "react-native-vector-icons/Entypo";
-import { ThemedButton } from "react-native-really-awesome-button";
+import Button, { ThemedButton } from "react-native-really-awesome-button";
+import { USECACHE } from "../config/cache";
+import * as ZIM from 'zego-zim-react-native'; import * as ZPNs from 'zego-zpns-react-native';
+import ZegoUIKitPrebuiltCallService, { ZegoCallInvitationDialog, ZegoUIKitPrebuiltCallWaitingScreen, ZegoUIKitPrebuiltCallInCallScreen, ZegoSendCallInvitationButton, } from '@zegocloud/zego-uikit-prebuilt-call-rn';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -23,6 +26,26 @@ export default function LoginScreen({ navigation }) {
   const [error, setError] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  var userMail = "default";
+  const initService = (userID, userName) => {
+    ZegoUIKitPrebuiltCallService.init(
+      2105949447,
+      "1da962453e140c11829e6b93d19172832038aef94b1324f1357a7066111790c3",
+      userID,
+      userName,
+      [ZIM, ZPNs],
+      {
+        ringtoneConfig: {
+          incomingCallFileName: 'zego_incoming.mp3',
+          outgoingCallFileName: 'zego_outgoing.mp3',
+        },
+        androidNotificationConfig: {
+          channelID: "ZegoUIKit",
+          channelName: "ZegoUIKit",
+        },
+      });
+  }
+
   const ValidModel = () => {
     let error = {};
     if (!email) {
@@ -39,11 +62,34 @@ export default function LoginScreen({ navigation }) {
     setIsFormValid(Object.keys(error).length === 0);
   };
 
+  const fetchUserData = () => {
+    axios
+      .get(`${DOMAIN}/get-self-info/${TOKEN.GetToken()}`)
+      .then((response) => {
+        console.log(response.data);
+        USECACHE.SetData("info", response.data);
+      })
+      .catch((error) => console.log(error));
+  };
+  const fetchUserFriends = () => {
+    axios
+      .get(`${DOMAIN}/get-friend-list/${TOKEN.GetToken()}`)
+      .then((response) => {
+        listFriends = response.data;
+        listFriends.map((item) => {
+          USECACHE.SetData(item.Info.Email, {
+            Avatar: item.Info.Avatar,
+            Background: item.Info.Background,
+            Name: item.Info.Name,
+            Since: item.Since,
+          });
+        });
+      })
+      .catch((e) => console.log(e));
+  };
   const handleLogin = async () => {
-    console.log("Login Again");
-    console.log(email);
-    console.log(password);
     // Basic email and password validation
+    // If form valid => handleLogin
     if (isFormValid) {
       axios
         .post(`${DOMAIN}/login`, {
@@ -54,11 +100,18 @@ export default function LoginScreen({ navigation }) {
           r = response.data;
           console.log("Token receive:", r);
           TOKEN.SetToken(r.token, r.timeout);
-          navigation.navigate("HomeScreen");
+          console.log("Data Loading...");
+          fetchUserData();
+          fetchUserFriends();
+          initService(
+            userMail//mail của tài khoản này
+            ,userMail // mail của tài khoản này
+            ) ;
+          // fetchUserMessage();
+          navigation.replace("HomeScreen");
         })
         .catch((err) => {
-          r = err;
-          console.log("error:", r);
+          console.log("error:", error.response.data);
         });
     }
     // hash password and make request
@@ -101,6 +154,7 @@ export default function LoginScreen({ navigation }) {
           <View style={styles.box_input}>
             <Entypo name="key" color={Colors._black} size={20} />
             <TextInput
+              secureTextEntry={true}
               style={styles.input}
               placeholder="Mật khẩu"
               placeholderTextColor="gray"
@@ -121,6 +175,7 @@ export default function LoginScreen({ navigation }) {
       >
         <Text style={styles.text}>Đăng nhập</Text>
       </TouchableHighlight>
+
       <View
         style={{
           borderBottomColor: Colors._white,
