@@ -21,6 +21,8 @@ start setup.exe
 
 ## Giao diện ứng dụng Chat
 
+<div style="display:flex">
 <img src="src/asset/ui/giaodien1.jpeg" alt="Giao diện ứng dụng chat" width="200">
 <img src="src/asset/ui/giaodien2.jpeg" alt="Giao diện ứng dụng chat" width="200">
 <img src="src/asset/ui/giaodien3.jpeg" alt="Giao diện ứng dụng chat" width="200">
+</div>
