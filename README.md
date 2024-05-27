@@ -7,17 +7,13 @@
         <p>
             Đối với hệ điều hành Linux:
         </p>
-        ```
-        ./setup.sh
-        ```
+        ```./setup.sh
     </li>
     <li>
         <p>
             Đối với hệ điều hành Windows:
         </p>
-        ```
-        start setup.exe
-        ```
+        ```start setup.exe
     </li>
 </ul>
 <h2>Giao diện của ứng dụng Chat</h2>
