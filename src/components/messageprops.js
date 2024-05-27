@@ -21,17 +21,21 @@ import {
   StyleSheet,
   Pressable,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React from "react";
 import Feather from "react-native-vector-icons/Feather";
 import Entypo from "react-native-vector-icons/Entypo";
 import Colors from "../asset/styles/color";
+import axios from "axios";
+import { DOMAIN, TOKEN } from "../config/const";
 export default function MessageProps({
   visible,
   onClose,
   time,
   content,
   sender,
+  deleteMsg,
 }) {
   return (
     <Modal
@@ -42,19 +46,20 @@ export default function MessageProps({
     >
       <Pressable onPress={onClose} style={styles.overlay}>
         <View style={styles.icons}>
-          <Text style={styles.text}>{content}</Text>
+          <Text style={styles.text}>Nội dung:{content}</Text>
+          <Text style={styles.text}>Thời gian:{time}</Text>
         </View>
         <View style={styles.props}>
           <Entypo name="minus" size={25} color={Colors._purple} />
           <View style={styles.props_list}>
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity style={styles.btn} onPress={deleteMsg}>
               <Entypo name="trash" size={25} color={Colors._purple} />
-              <Text style={styles.text}>Xóa</Text>
+              <Text style={styles.text}>Xóa tin nhắn</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btn}>
+            {/* <TouchableOpacity style={styles.btn}>
               <Feather name="delete" size={25} color={Colors._purple} />
               <Text style={styles.text}>Thu hồi</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.btn}>
               <Feather name="copy" size={25} color={Colors._purple} />
               <Text style={styles.text}>Sao chép</Text>
@@ -83,7 +88,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     width: "80%",
-    alignItems: "center",
   },
   props: {
     backgroundColor: Colors._white,

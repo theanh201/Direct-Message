@@ -30,16 +30,14 @@ const ChatScreen = ({ route, navigation }) => {
   const [listMessages, setListMessages] = useState([]);
   const [testMess, setTestMess] = useState([{ time: "", content: "" }]);
   const [listTimes, setListTimes] = useState([]);
+  const [msgIndex, setMsgIndex] = useState(0);
   const [message, setMessage] = useState("");
   const websocket = new WebSocket("ws://192.168.1.101:8080/ws");
   const [loading, setLoading] = useState(true);
-  const [textWidths, setTextWidths] = useState({});
   const [visableProps, setVisableProps] = useState(false);
   const [content, setContent] = useState("");
   const flatListRef = useRef(null);
-  const scrollToEnd = () => {
-    flatListRef.current?.scrollToEnd({ animated: true });
-  };
+
   useEffect(() => {
     // Initialize WebSocket connection
     websocket.onopen = () => {
@@ -59,7 +57,7 @@ const ChatScreen = ({ route, navigation }) => {
         ...prevMessages,
         jsonData.SenderEmail == friendEmail
           ? jsonData.Content
-          : "^" + jsonData.Content,
+          : "^@" + jsonData.Content,
       ]);
     };
 
@@ -77,6 +75,22 @@ const ChatScreen = ({ route, navigation }) => {
       websocket.close();
     };
   }, []);
+
+  // Auto Scroll to Last Message after send new message
+  const scrollToEnd = () => {
+    flatListRef.current?.scrollToEnd({ animated: true });
+  };
+  const DeleteMessage = () => {
+    axios
+      .delete(`${DOMAIN}/delete-message/${TOKEN.GetToken()}/${time}`)
+      .then((response) => {
+        LongPressToggle();
+        Alert.alert("Tin nhắn đã được xóa");
+        getMessageByEmail();
+      })
+      .catch((error) => console.log(error));
+  };
+  // Get ALL message by email after join conversation
   const getMessageByEmail = () => {
     axios
       .get(
@@ -89,12 +103,9 @@ const ChatScreen = ({ route, navigation }) => {
         response.data.map((msg) => {
           setListMessages((preMessage) => [
             ...preMessage,
-            msg.SenderEmail !== friendEmail ? "^" + msg.Content : msg.Content,
+            msg.SenderEmail !== friendEmail ? "^@" + msg.Content : msg.Content,
           ]);
-          setTestMess((preMess) => [
-            ...preMess,
-            { time: msg.Since, content: msg.Content },
-          ]);
+          setListTimes((preTime) => [...preTime, msg.Since]);
         });
         setLoading(false);
       })
@@ -103,7 +114,7 @@ const ChatScreen = ({ route, navigation }) => {
         setLoading(false);
       });
   };
-
+  // Send Message
   const sendMessage = () => {
     if (websocket && message) {
       data = {
@@ -117,21 +128,16 @@ const ChatScreen = ({ route, navigation }) => {
       setMessage("");
     }
   };
-  // websocket.onmessage = (event) => {
-  //   const newMess = event.data;
-  //   console.log(newMess);
-  //   setListMessages((preMessage) => [...preMessage, newMess]);
-  //   console.log("Message from server:", messages);
-  // };
-  // };
 
-  // const fetchMessage=()=>{
-  //   axios.get(`${DOMAIN}/get-all-message-after-time/${TOKEN.GetToken()}/2024-05-03 20:57:28")
-  // }
-
-  //Process Text Width
-  const LongPressToggle = (item) => {
-    setContent(item);
+  //Process Long Press Event
+  const LongPressToggle = (item, index) => {
+    msg = typeof item == "string" ? item.replace("^@", "") : item;
+    time =
+      typeof listTimes[index] == "string"
+        ? listTimes[index].replace(" ", "_")
+        : listTimes[index];
+    setContent(msg);
+    setMsgIndex(time);
     setVisableProps(!visableProps);
   };
 
@@ -171,11 +177,11 @@ const ChatScreen = ({ route, navigation }) => {
             style={styles.chat}
             data={listMessages}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) =>
+            renderItem={({ item, index }) =>
               item !== null ? (
                 <TouchableHighlight
                   underlayColor="transparent"
-                  onLongPress={() => LongPressToggle(item)}
+                  onLongPress={() => LongPressToggle(item, index)}
                   style={styles.boxchat}
                 >
                   <LinearGradient
@@ -183,7 +189,7 @@ const ChatScreen = ({ route, navigation }) => {
                       styles.basemessage,
 
                       item
-                        ? item.indexOf("^") == 0
+                        ? item.indexOf("^@") == 0
                           ? styles.yourmessage
                           : styles.friendmessage
                         : styles.nullmessage,
@@ -191,13 +197,13 @@ const ChatScreen = ({ route, navigation }) => {
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
                     colors={
-                      item.indexOf("^") == 0
+                      item.indexOf("^@") == 0
                         ? [Colors._blue, Colors._purple]
                         : [Colors._darkblue, Colors._skyblue]
                     }
                   >
                     <Text style={styles.text}>
-                      {item ? item.replace("^", "") : ""}
+                      {item ? item.replace("^@", "") : ""}
                     </Text>
                   </LinearGradient>
                 </TouchableHighlight>
@@ -233,6 +239,8 @@ const ChatScreen = ({ route, navigation }) => {
             visible={visableProps}
             content={content}
             onClose={LongPressToggle}
+            time={msgIndex}
+            deleteMsg={DeleteMessage}
           />
         </SafeAreaView>
       )}
