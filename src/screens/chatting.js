@@ -32,7 +32,7 @@ const ChatScreen = ({ route, navigation }) => {
   const [listTimes, setListTimes] = useState([]);
   const [msgIndex, setMsgIndex] = useState(0);
   const [message, setMessage] = useState("");
-  const websocket = new WebSocket("ws://192.168.1.101:8080/ws");
+  const websocket = new WebSocket("ws://10.0.2.2:8080/send-message-friend-unencrypt");
   const [loading, setLoading] = useState(true);
   const [visableProps, setVisableProps] = useState(false);
   const [content, setContent] = useState("");

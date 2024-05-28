@@ -15,6 +15,7 @@ import AwsomeAleart from "../../components/awsome_aleart";
 import { USECACHE } from "../../config/cache";
 import { DOMAIN, TOKEN } from "../../config/const";
 import FastImage from "react-native-fast-image";
+import axios from "axios";
 import defaultTemplate from "../../config/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -22,8 +23,14 @@ export default function UserScreen({ navigation }) {
   const [modalVisable, setModalVisable] = useState(false);
   const [myInfo, setMyInfo] = useState({});
   const fetchInfo = async () => {
-    info = await USECACHE.GetData("info");
-    setMyInfo(info);
+    // bug need help
+    // info = await USECACHE.GetData("info");
+    try{
+      const info = await axios.get(`${DOMAIN}/get-self-info/${TOKEN.GetToken()}`)
+      setMyInfo(info.data);
+    }catch(e){
+      console.error(e);
+    }
   };
 
   useEffect(() => {
@@ -33,11 +40,12 @@ export default function UserScreen({ navigation }) {
     setModalVisable(!modalVisable);
   };
   const onConfirm = async () => {
-    // try {
-    //   await AsyncStorage.clear();
-    // } catch (e) {
-    //   // clear error
-    // }
+    try {
+      await AsyncStorage.clear();
+    } catch (e) {
+      // clear error
+      console.error(e);
+    }
     navigation.replace("LoginScreen");
   };
   return (

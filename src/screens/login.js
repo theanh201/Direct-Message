@@ -74,10 +74,10 @@ export default function LoginScreen({ navigation }) {
           username: email,
           password: await sha256(password),
         })
-        .then((response) => {
+        .then(async (response) => {
           r = response.data;
           console.log("Token receive:", r);
-          TOKEN.SetToken(r.token, r.timeout);
+          await TOKEN.SetToken(r.token, r.timeout);
           console.log("Data Loading...");
           fetchUserData();
           fetchUserFriends();
