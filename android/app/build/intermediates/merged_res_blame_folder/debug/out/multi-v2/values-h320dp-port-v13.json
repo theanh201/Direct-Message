@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.chatapp-mergeDebugResources-33:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
+            "outputFile": "com.chatapp-mergeDebugResources-45:/values-h320dp-port-v13/values-h320dp-port-v13.xml",
             "map": [
                 {
-                    "source": "/home/huyonic/.gradle/caches/transforms-4/452ffdcf9637ac22e3426671d55dd6fb/transformed/material-1.6.1/res/values-h320dp-port-v13/values-h320dp-port-v13.xml",
+                    "source": "/home/admin/.gradle/caches/transforms-4/5349654a033d3a0a7f56022977e742a4/transformed/material-1.6.1/res/values-h320dp-port-v13/values-h320dp-port-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

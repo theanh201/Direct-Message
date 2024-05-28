@@ -13,12 +13,22 @@ import java.util.ArrayList;
 
 // @dr.pogodin/react-native-fs
 import com.drpogodin.reactnativefs.ReactNativeFsPackage;
+// @notifee/react-native
+import io.invertase.notifee.NotifeePackage;
 // @react-native-async-storage/async-storage
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 // @react-native-masked-view/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
+// @zegocloud/react-native-callkeep
+import io.wazo.callkeep.RNCallKeepPackage;
+// @zegocloud/zego-uikit-prebuilt-call-rn
+import com.zegouikitprebuiltcallrn.ZegoUIKitPrebuiltCallRNPackage;
+// @zegocloud/zego-uikit-rn
+import com.zegouikitrn.ZegoUIKitRNPackage;
 // lottie-react-native
 import com.airbnb.android.react.lottie.LottiePackage;
+// react-native-encrypted-storage
+import com.emeraldsanto.encryptedstorage.RNEncryptedStoragePackage;
 // react-native-fast-image
 import com.dylanvann.fastimage.FastImageViewPackage;
 // react-native-fs
@@ -27,6 +37,8 @@ import com.rnfs.RNFSPackage;
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
+// react-native-keep-awake
+import com.corbt.keepawake.KCKeepAwakePackage;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-permissions
@@ -39,8 +51,16 @@ import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 // react-native-sha256
 import com.sha256lib.Sha256Package;
+// react-native-sound
+import com.zmxv.RNSound.RNSoundPackage;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
+// zego-express-engine-reactnative
+import im.zego.reactnative.RCTZegoExpressEnginePackage;
+// zego-zim-react-native
+import im.zego.RNZimReactnativeSdkPackage;
+// zego-zpns-react-native
+import im.zego.zpns_reactnative_sdk.RCTZegoZPNsPackage;
 
 public class PackageList {
   private Application application;
@@ -87,20 +107,30 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new ReactNativeFsPackage(),
+      new NotifeePackage(),
       new AsyncStoragePackage(),
       new RNCMaskedViewPackage(),
+      new RNCallKeepPackage(),
+      new ZegoUIKitPrebuiltCallRNPackage(),
+      new ZegoUIKitRNPackage(),
       new LottiePackage(),
+      new RNEncryptedStoragePackage(),
       new FastImageViewPackage(),
       new RNFSPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
+      new KCKeepAwakePackage(),
       new LinearGradientPackage(),
       new RNPermissionsPackage(),
       new ReanimatedPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
       new Sha256Package(),
-      new VectorIconsPackage()
+      new RNSoundPackage(),
+      new VectorIconsPackage(),
+      new RCTZegoExpressEnginePackage(),
+      new RNZimReactnativeSdkPackage(),
+      new RCTZegoZPNsPackage()
     ));
   }
 }

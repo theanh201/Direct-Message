@@ -15,3 +15,5 @@ npm install react-native-fs
 npm install react-native-fast-image
 npm install react-native-linear-gradient
 yarn add lottie-react-native
+npm install @zegocloud/zego-uikit-prebuilt-call-rn
+npm install @zegocloud/zego-uikit-rn react-delegate-component @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context react-native-sound @notifee/react-native@5.3.0 react-native-encrypted-storage zego-express-engine-reactnative@3.2.0 zego-zim-react-native@2.12.1 zego-zpns-react-native@2.5.0-alpha @zegocloud/react-native-callkeep react-native-keep-awake@4.0.0

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.chatapp-mergeDebugResources-33:/values-en-rCA/values-en-rCA.xml",
+            "outputFile": "com.chatapp-mergeDebugResources-45:/values-en-rCA/values-en-rCA.xml",
             "map": [
                 {
-                    "source": "/home/huyonic/.gradle/caches/transforms-4/6621c239d1e00abea0752787fff99403/transformed/core-1.9.0/res/values-en-rCA/values-en-rCA.xml",
+                    "source": "/home/admin/.gradle/caches/transforms-4/f76bdcd48ff8fedc2015290c63fdd657/transformed/core-1.9.0/res/values-en-rCA/values-en-rCA.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/huyonic/.gradle/caches/transforms-4/346f569ba9d365042b456e7e69a1a638/transformed/appcompat-1.6.1/res/values-en-rCA/values-en-rCA.xml",
+                    "source": "/home/admin/.gradle/caches/transforms-4/5aadb3469717b3836be5626294f6b85d/transformed/appcompat-1.6.1/res/values-en-rCA/values-en-rCA.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

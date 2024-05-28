@@ -17,7 +17,8 @@ import Colors from "../asset/styles/color";
 import Entypo from "react-native-vector-icons/Entypo";
 import Button, { ThemedButton } from "react-native-really-awesome-button";
 import { USECACHE } from "../config/cache";
-
+import * as ZIM from 'zego-zim-react-native'; import * as ZPNs from 'zego-zpns-react-native';
+import ZegoUIKitPrebuiltCallService, { ZegoCallInvitationDialog, ZegoUIKitPrebuiltCallWaitingScreen, ZegoUIKitPrebuiltCallInCallScreen, ZegoSendCallInvitationButton, } from '@zegocloud/zego-uikit-prebuilt-call-rn';
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,6 +66,31 @@ export default function LoginScreen({ navigation }) {
       })
       .catch((e) => console.log(e));
   };
+    // 2105949447,
+    // "1da962453e140c11829e6b93d19172832038aef94b1324f1357a7066111790c3",
+    // `${email}`, // thi no la nhuw the dayok 
+    // `${email}`,
+    const onUserLogin = () => {
+        ZegoUIKitPrebuiltCallService.init(
+        2105949447, 
+        "1da962453e140c11829e6b93d19172832038aef94b1324f1357a7066111790c3",
+        `${email}`, 
+        `${email}`,
+        [ZIM, ZPNs],
+        {
+            ringtoneConfig: {
+                incomingCallFileName: 'zego_incoming.mp3',
+                outgoingCallFileName: 'zego_outgoing.mp3',
+            },
+            notifyWhenAppRunningInBackgroundOrQuit: true,
+            androidNotificationConfig: {
+                channelID: "ZegoUIKit",
+                channelName: "ZegoUIKit",
+            },
+        }
+      );
+      // console.log(`${email}`);
+    }
   const handleLogin = async () => {
     // Basic email and password validation
     // If form valid => handleLogin
@@ -79,13 +105,15 @@ export default function LoginScreen({ navigation }) {
           console.log("Token receive:", r);
           await TOKEN.SetToken(r.token, r.timeout);
           console.log("Data Loading...");
+          // onUserLogin();
           fetchUserData();
           fetchUserFriends();
           // fetchUserMessage();
           navigation.replace("HomeScreen");
         })
         .catch((err) => {
-          console.log("error:", error.response.data);
+          console.log("error:", err.response.data);
+          Alert.alert("error:", err.response.data);
         });
     }
     // hash password and make request

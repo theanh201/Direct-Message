@@ -2,6 +2,12 @@
 <resources>
     <integer name="react_native_dev_server_port">8081</integer>
     <string name="app_name">ChatApp</string>
+    <string name="gcm_defaultSenderId" translatable="false">406702421762</string>
+    <string name="google_api_key" translatable="false">AIzaSyBOfQ5loKeHrDqDssQEEwnho6RXx8d70Do</string>
+    <string name="google_app_id" translatable="false">1:406702421762:android:41629663b5dbd92088341b</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBOfQ5loKeHrDqDssQEEwnho6RXx8d70Do</string>
+    <string name="google_storage_bucket" translatable="false">chat-app-b3da7.appspot.com</string>
+    <string name="project_id" translatable="false">chat-app-b3da7</string>
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>

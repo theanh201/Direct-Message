@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -24,13 +24,60 @@ import Friends from "./friends";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HeaderComponent from "../../components/header";
 import Test from "../test";
+import * as ZIM from 'zego-zim-react-native'; import * as ZPNs from 'zego-zpns-react-native';
+import ZegoUIKitPrebuiltCallService, { ZegoCallInvitationDialog, ZegoUIKitPrebuiltCallWaitingScreen, ZegoUIKitPrebuiltCallInCallScreen, ZegoSendCallInvitationButton, } from '@zegocloud/zego-uikit-prebuilt-call-rn';
+import { useFocusEffect } from "@react-navigation/native";
+import { useState, useCallback } from "react";
+import { DOMAIN, TOKEN } from "../../config/const";
+import axios from "axios";
 
 export function HomeScreen({ navigation }) {
+  const [hasRun, setHasRun] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!hasRun) {
+        onUserLogin();
+        setHasRun(true);
+      }
+    }
+  )
+  )
   const theme = "light";
   const Tab = createBottomTabNavigator();
   const [selectedTab, setSelectedTab] = React.useState("message");
   const [optionVisible, setOptionVisible] = React.useState(false);
+  const onUserLogin = async () => {
+    // get email
+    let email;
+    try{
+      const info = await axios.get(`${DOMAIN}/get-self-info/${TOKEN.GetToken()}`);
+      email = info.data.Email;
+      console.log(email);
+    }catch(err){
+      console.error(err);
+    }
 
+    ZegoUIKitPrebuiltCallService.init(
+    2105949447, 
+    "1da962453e140c11829e6b93d19172832038aef94b1324f1357a7066111790c3",
+    `${email}`, 
+    `${email}`,
+    [ZIM, ZPNs],
+    {
+        ringtoneConfig: {
+            incomingCallFileName: 'zego_incoming.mp3',
+            outgoingCallFileName: 'zego_outgoing.mp3',
+        },
+        notifyWhenAppRunningInBackgroundOrQuit: true,
+        androidNotificationConfig: {
+            channelID: "ZegoUIKit",
+            channelName: "ZegoUIKit",
+        },
+    }
+  );
+  // console.log(`${email}`);
+}
   const toggleOptionVisible = () => {
     setOptionVisible(!optionVisible);
   };
