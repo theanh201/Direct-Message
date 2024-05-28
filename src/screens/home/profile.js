@@ -33,12 +33,11 @@ export default function UserScreen({ navigation }) {
     setModalVisable(!modalVisable);
   };
   const onConfirm = async () => {
-    try {
-      await AsyncStorage.clear();
-    } catch (e) {
-      // clear error
-      console.log(e)
-    }
+    // try {
+    //   await AsyncStorage.clear();
+    // } catch (e) {
+    //   // clear error
+    // }
     navigation.replace("LoginScreen");
   };
   return (
