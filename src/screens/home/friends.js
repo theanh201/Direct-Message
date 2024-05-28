@@ -8,6 +8,8 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  Modal,
+  Alert,
 } from "react-native";
 import axios from "axios";
 import Colors from "../../asset/styles/color";
@@ -26,6 +28,12 @@ const MyComponent = ({ navigation }) => {
   const [friendList, setFriendList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visibleCheck, setVisableCheck] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [background, setBackground] = useState("");
+  const [avatar, setAvatar] = useState("");
+
   const userID = 'default';
   const userName = 'default';
 
@@ -59,9 +67,59 @@ const MyComponent = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   );
-
+  
   return (
     <SafeAreaView style={styles.container}>
+      <Modal
+        style={{alignItems:'center'}}
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}>
+        <View style={{alignItems:"center", justifyContent:"center", flex:1}}>
+          <View style={{backgroundColor:"white", borderWidth:1, borderRadius:10, alignContent:"center", width:"90%"}}>
+            <FastImage
+                style={{height:"30%", width:"100%", borderRadius:10}}
+                source={{
+                  uri: avatar
+                    ? `${DOMAIN}/get-background/${TOKEN.GetToken()}/${background}`
+                    : defaultTemplate.avatar,
+                  priority: FastImage.priority.high,
+                }}
+              />
+            <View style={{alignItems:'center', top:-50}}>
+              <FastImage
+                style={{height:100, width:100, borderColor:"gray", borderWidth:2, borderRadius:360}}
+                source={{
+                  uri: avatar
+                    ? `${DOMAIN}/get-avatar/${TOKEN.GetToken()}/${avatar}`
+                    : defaultTemplate.avatar,
+                  priority: FastImage.priority.high,
+                }}
+              />
+              <Text style={{fontSize:25}}>{name}</Text>
+              <Text>Email: {email}</Text>
+            </View>
+            <View style={{bottom:5, paddingHorizontal:5, position:"absolute", width:"100%"}}>
+              <TouchableOpacity onPress={() => {setModalVisible(false)}} style={{backgroundColor:"green", borderRadius:5, alignItems:"center", marginBottom:5}}>
+                <Text style={{fontSize:20, padding:5}}>Exit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={async () => {
+                try{
+                  const resp = await axios.delete(`${DOMAIN}/unfriend/${TOKEN.GetToken()}/${email}`)
+                  console.log(resp.data);
+                  Alert.alert(resp.data["message"]);
+                }catch(err){
+                  console.log(err.data);
+                }
+                fetchData();
+                setModalVisible(false);
+                }} style={{backgroundColor:"red", borderRadius:5, alignItems:"center"}}>
+                <Text style={{fontSize:20, padding:5}}>Unfriend</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       {loading ? (
         <LottieView
           style={{ width: 200, height: 200 }}
@@ -76,7 +134,13 @@ const MyComponent = ({ navigation }) => {
             style={{}}
             ListFooterComponent={reloadList}
             renderItem={({ item }) => (
-              <View style={styles.friend}>
+              <TouchableOpacity style={styles.friend} onPress={() => {
+                setAvatar(item.Info.Avatar);
+                setBackground(item.Info.Background);
+                setEmail(item.Info.Email);
+                setName(item.Info.Name);
+                setModalVisible(true);
+              }}>
                 <FastImage
                   style={styles.img}
                   source={{
@@ -131,7 +195,7 @@ const MyComponent = ({ navigation }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
           />
           <CheckModal
@@ -143,7 +207,14 @@ const MyComponent = ({ navigation }) => {
           <View style={{ height: 50 }}></View>
         </View>
       ) : (
-        <Text style={styles.text}>Hiện không có bạn bè</Text>
+        <View>
+          <Text style={styles.text}>Hiện không có bạn bè</Text>
+          <View style={{alignItems:"center"}}>
+            <TouchableOpacity onPress={fetchData}>
+              <Text style={{fontSize:20}}>Click to reload</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
     </SafeAreaView>
   );
