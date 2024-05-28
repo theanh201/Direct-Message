@@ -27,7 +27,7 @@ const MyComponent = ({ navigation }) => {
   const [visibleCheck, setVisableCheck] = useState(false);
   const [topMessage, setTopMessage] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const websocket = new WebSocket("ws://192.168.1.101:8080/ws");
+  const websocket = new WebSocket("ws://10.0.2.2:8080/send-message-friend-unencrypt");
 
   const ToggleCheck = () => {
     setVisableCheck(!visibleCheck);
