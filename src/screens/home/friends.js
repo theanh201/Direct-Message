@@ -52,6 +52,13 @@ const MyComponent = ({ navigation }) => {
   const handleChat = (item) => {
     navigation.navigate("ChatScreen", { item });
   };
+  const reloadList = () => (
+    <View style={{alignItems:"center"}}>
+      <TouchableOpacity onPress={fetchData}>
+        <Text style={{fontSize:20}}>Click to reload</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,6 +74,7 @@ const MyComponent = ({ navigation }) => {
           <FlatList
             data={friendList}
             style={{}}
+            ListFooterComponent={reloadList}
             renderItem={({ item }) => (
               <View style={styles.friend}>
                 <FastImage
